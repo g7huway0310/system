@@ -32,7 +32,7 @@ public class ShoppingDAOImp implements ProductDAO {
 
 	// id找尋商品
 	public ShoppingProduct findProduct(String producID) {
-		String sqlString = "select * from shoppingdata where PRODUCT_id=?";
+		String sqlString = "select * from shoppingdata where PRODUCT_ID=?";
 		ShoppingProduct findedProduct = null;
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sqlString);
@@ -49,7 +49,7 @@ public class ShoppingDAOImp implements ProductDAO {
 				
 				String feature=rs.getString("PRODUCT_FEATURE");
 				
-				int categortId = rs.getInt("categortId");
+				int categortId = rs.getInt("CATEGORY_ID");
 				
 				int click = rs.getInt("CLICKNUM");
 				

@@ -3,7 +3,6 @@ package shoppingMallBean;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.initTable;
 
 public class ShoppingProduct {
 	

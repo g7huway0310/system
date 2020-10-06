@@ -20,11 +20,9 @@ public class initShoppingdata {
 		String qryInsert="insert into shoppingdata values(?,?,?,?,?,?,?,?,?,?)";//動態SQL指令
 		try ( Connection conn = DriverManager.getConnection(
                "jdbc:oracle:thin:@//localhost:1521/XEPDB1","scott", "tiger");
-				
-				
 				PreparedStatement pstmt= conn.prepareStatement(qryInsert);//因為是insert所以用PreparedStatement來接
         ) {
-		File file = new File("D:\\2.csv");
+		File file = new File("C:\\data.csv");
 		
 		InputStream is = new FileInputStream(file);
 	    BufferedReader br= new BufferedReader(new InputStreamReader(is,"UTF-8"));
@@ -38,7 +36,6 @@ public class initShoppingdata {
 			for(int i=0;i<array.length;i++){//偷看陣列元素有沒有切對
 
 			}
-			
 			
 			pstmt.setString(1,array[0]);
 			pstmt.setString(2,array[1]);
