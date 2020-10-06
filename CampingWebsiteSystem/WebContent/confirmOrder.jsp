@@ -12,6 +12,37 @@
 <jsp:useBean   id="today"  class="java.util.Date" scope="session"/> 
 <title>Insert title here</title>
 </head>
+<script type="text/javascript">
+function cancelOrder() {
+	if (confirm("確定取消此份訂單 ? ") ) {
+		// 接收此資料的Servlet會使用 finalDecision 參數的值
+		document.forms[0].finalDecision.value = "CANCEL";
+		document.forms[0].action="<c:url value='ProcessOrder.do' />";
+		document.forms[0].method="POST";
+		document.forms[0].submit();
+		return;
+	} else {
+		return;
+	}
+}
+function reconfirmOrder() {
+	var sa = document.getElementById('ShippingAddress').value;
+	if  (sa === "") {
+		window.alert ('出貨地址不能是空白');
+		return ; 
+	}
+	if (confirm("確定送出此份訂單 ? ") ) {
+		// 接收此資料的Servlet會使用 finalDecision 參數的值
+		document.forms[0].finalDecision.value = "ORDER";
+		document.forms[0].action="<c:url value='ProcessOrder.do' />";
+		document.forms[0].method="POST";
+		document.forms[0].submit();
+		return;
+	} else {
+		return;
+	}
+}
+</script>
 <body>
 	<FORM style="margin: 0 auto; width: 700px;"
 		action="<c:url value='ProcessOrder' />" method="POST">
@@ -44,6 +75,7 @@
 	</FORM>
 	
     <input type="button" name="OrderBtn"  value="確定送出" onclick="reconfirmOrder()">
+    
     <input type="button" name="CancelBtn" value="取消訂單" onclick="cancelOrder()">
 
 </body>
