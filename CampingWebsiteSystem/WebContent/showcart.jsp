@@ -28,6 +28,11 @@ function deAll(){
 	document.forms[0].method="POST";
 	document.forms[0].submit();
 }
+function checkout(){
+	document.forms[0].action="<c:url value='BuyServlet'/>"
+	document.forms[0].method="POST";
+	document.forms[0].submit();
+}
 
 
 function modify(key, qty, index) {
@@ -118,7 +123,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<Input type="button" name="update" value="清空購物車" onclick="deAll()"></Input>
 		</td>
 		<td colspan="2"><Input type="button" name="checkout" value="結算" onclick="checkout()"></Input></td>
+		
 		<a>>繼續選購</a>
+		
 	</table>
 	<form>
 		<input type="hidden" name="a" />

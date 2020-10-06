@@ -1,27 +1,28 @@
 package Servlet;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import DAOImp.BusinessServiceImp;
 import shoppingMallBean.Cart;
-import shoppingMallBean.ShoppingProduct;
 
 /**
- * Servlet implementation class ChangeQuantitySevlet
+ * Servlet implementation class BuyServlet
  */
-@WebServlet("/ChangeQuantitySevlet")
-public class ChangeQuantitySevlet extends HttpServlet {
+@WebServlet("/BuyServlet")
+public class BuyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ChangeQuantitySevlet() {
+    public BuyServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,18 +32,7 @@ public class ChangeQuantitySevlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		 BusinessServiceImp service=new BusinessServiceImp();
-		 
-		 //取得商品id
-         String productId = request.getParameter("id");
-         //想要更改數量
-         String quantity = request.getParameter("quantity");
-         //取得購物車
-         Cart cart=(Cart)request.getSession(true).getAttribute("cart");
-         
-         service.changeQuantity(productId, quantity, cart);
-         
-         request.getRequestDispatcher("listcart.jsp").forward(request, response);
+		doPost(request, response);
 	}
 
 	/**
@@ -50,7 +40,23 @@ public class ChangeQuantitySevlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+		HttpSession session = request.getSession(false);
+		if (session == null) {      // 使用逾時
+			response.sendRedirect(getServletContext().getContextPath() + "/index.jsp");
+			return;
+		}
+		Cart cart =(Cart) session.getAttribute("cart");
+		
+		double price = cart.getPrice();
+		
+		System.out.println(price);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("confirmOrder.jsp");
+		
+		rd.forward(request, response);
+		
+		return;
+		
 	}
 
 }

@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 public class Order {
-	private int orderId;            //订单编号
-    private String orderNum;		//订单号
-    private int userId;             //用户编号
-    private String orderDate;       //订单日期
-    private double money;			//订单金额
-    private int orderStatus;     	//订单状态
+	
+	private int orderId;            
+    private String orderNum;		
+    private int userId;            
+    private String orderDate;       
+    private double money;			
+    private int orderStatus;     	
     
     private List<OrderItem> oItem=new ArrayList<>();
     
