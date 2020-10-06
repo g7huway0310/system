@@ -17,6 +17,6 @@
    <form action="./ShoppingServlet" method="post">
    <input type="text" name="typekey" size="10" maxlength="10">
    <input type="submit" name="type">
-    
+
 </body>
 </html>

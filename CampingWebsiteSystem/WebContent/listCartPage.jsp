@@ -28,10 +28,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
            }  
         }  
     function changequantity(input,id,oldvalue){  
-           //得到修改的数量  
+         
           var quantity = input.value;  
-            
-          //判断是否是正整数  
+           
           if(quantity<0 || quantity!=parseInt(quantity)){  
                  alert("请输入正整数！！");  
                  input.value=oldvalue;  
