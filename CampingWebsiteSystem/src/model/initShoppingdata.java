@@ -17,14 +17,14 @@ public class initShoppingdata {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String qryInsert="insert into shoppingdata values(?,?,?,?,?,?,?,?)";//動態SQL指令
+		String qryInsert="insert into shoppingdata values(?,?,?,?,?,?,?,?,?,?)";//動態SQL指令
 		try ( Connection conn = DriverManager.getConnection(
                "jdbc:oracle:thin:@//localhost:1521/XEPDB1","scott", "tiger");
 				
 				
 				PreparedStatement pstmt= conn.prepareStatement(qryInsert);//因為是insert所以用PreparedStatement來接
         ) {
-		File file = new File("C:\\campdata.csv");
+		File file = new File("D:\\2.csv");
 		
 		InputStream is = new FileInputStream(file);
 	    BufferedReader br= new BufferedReader(new InputStreamReader(is,"UTF-8"));
@@ -45,9 +45,11 @@ public class initShoppingdata {
 			pstmt.setString(3,array[2]);
 			pstmt.setDouble(4,Double.parseDouble(array[3]));
 			pstmt.setString(5,array[4]);
-			pstmt.setDouble(6,Double.parseDouble(array[5]));
+			pstmt.setString(6,array[5]);
 			pstmt.setString(7,array[6]);
 			pstmt.setDouble(8,Double.parseDouble(array[7]));
+			pstmt.setDouble(9,Double.parseDouble(array[8]));
+			pstmt.setDouble(10,Double.parseDouble(array[9]));
 			pstmt.execute();
 			
         };

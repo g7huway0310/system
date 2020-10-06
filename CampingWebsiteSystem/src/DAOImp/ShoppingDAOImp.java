@@ -46,8 +46,14 @@ public class ShoppingDAOImp implements ProductDAO {
 				String spec = rs.getString("PRODUCT_SPEC");
 				int price = rs.getInt("PRODUCT_PRICE");
 				int stack = rs.getInt("PRODUCT_STACK");
-				int people = rs.getInt("PRODUCT_PEOPLE");
-				findedProduct = new ShoppingProduct(producID, brands, name, price, spec, stack, warring, people);
+				
+				String feature=rs.getString("PRODUCT_FEATURE");
+				
+				int categortId = rs.getInt("categortId");
+				
+				int click = rs.getInt("CLICKNUM");
+				
+				findedProduct=new ShoppingProduct(id, brands, name, price, categortId, spec, stack, warring, feature, click);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -99,7 +105,7 @@ public class ShoppingDAOImp implements ProductDAO {
 	// 商品類型
 	public List<ShoppingProduct> searchtype(int selectWhich) {
 
-		String[] typeArray = { "CMP","tool", "carpet","bedding","furniture", "lamp","CK", "tableware", "ice"};
+		String[] typeArray = { "tent","sky","bedding", "cartpet","furniture","furniture", "lamp","cook", "tableware", "ice","tool"};
 
 		List<ShoppingProduct> list = new ArrayList<ShoppingProduct>();
 
@@ -123,6 +129,7 @@ public class ShoppingDAOImp implements ProductDAO {
 				String warring = rs.getString("PRODUCT_WARRING");
 
 				ShoppingProduct product = new ShoppingProduct(id, brand, name, price, spec, stack, warring);
+				
 				list.add(product);
 
 			}
@@ -187,7 +194,7 @@ public class ShoppingDAOImp implements ProductDAO {
 			stmt.setString(5, shoppingProduct.getProductSpec());
 			stmt.setInt(6, shoppingProduct.getProductStack());
 			stmt.setString(7, shoppingProduct.getProductWarring());
-			stmt.setInt(8, shoppingProduct.getPeople());
+			
 
 			int result = stmt.executeUpdate();
 

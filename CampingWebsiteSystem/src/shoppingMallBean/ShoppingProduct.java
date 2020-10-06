@@ -3,22 +3,63 @@ package shoppingMallBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.initTable;
+
 public class ShoppingProduct {
 	
 	 private String productId;
 	 private String productBrand;
 	 private String productName;
 	 private int productPrice;
-	
+	 private int categortId;
 	 private String productSpec;
 	 private int productStack;
 	 private String productWarring;
+	 private String productfeature;
+	 private int click;
 	 
-	 private int people;
-	
-	 private List<Object> list = new ArrayList<Object>();
+	 public ShoppingProduct(String productId, String productBrand, String productName, int productPrice, int categortId,
+			String productSpec, int productStack, String productWarring, String productfeature, int click) {
+		super();
+		this.productId = productId;
+		this.productBrand = productBrand;
+		this.productName = productName;
+		this.productPrice = productPrice;
+		this.categortId = categortId;
+		this.productSpec = productSpec;
+		this.productStack = productStack;
+		this.productWarring = productWarring;
+		this.productfeature = productfeature;
+		this.click = click;
+	}
+
+	public String getProductfeature() {
+		return productfeature;
+	}
+
+	public void setProductfeature(String productfeature) {
+		this.productfeature = productfeature;
+	}
+
+	public int getClick() {
+		return click;
+	}
+
+	public void setClick(int click) {
+		this.click = click;
+	}
+
+	private List<Object> list = new ArrayList<Object>();
 	 
-	 public void setChild(Object object) {
+	 public int getCategortId() {
+		return categortId;
+	}
+
+	public void setCategortId(int categortId) {
+		this.categortId = categortId;
+	}
+
+	public void setChild(Object object) {
 	        list.add(object);
 	    }
 
@@ -42,18 +83,7 @@ public class ShoppingProduct {
 		
 	}
 
-	public ShoppingProduct(String productId, String productBrand, String productName, int productPrice,
-			String productSpec, int productStack, String productWarring, int people) {
-		super();
-		this.productId = productId;
-		this.productBrand = productBrand;
-		this.productName = productName;
-		this.productPrice = productPrice;
-		this.productSpec = productSpec;
-		this.productStack = productStack;
-		this.productWarring = productWarring;
-		this.people = people;
-	}
+	
 
 	public String getProductId() {
 		return productId;
@@ -111,13 +141,7 @@ public class ShoppingProduct {
 		this.productWarring = productWarring;
 	}
 
-	public int getPeople() {
-		return people;
-	}
-
-	public void setPeople(int people) {
-		this.people = people;
-	}
+	
 
 	
 }

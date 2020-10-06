@@ -9,14 +9,14 @@ public class Cart {
 	
 	private double price;//總價
 	
-	public void add(ShoppingProduct product){
+	public void add(ShoppingProduct product,int num){
 		CartItem item=map.get(product.getProductId());//獲取購物車商品訊息
 		if(item!=null){  
-            item.setQuantity(item.getQuantity()+1);  
+            item.setQuantity(item.getQuantity()+num);  
         }else{  
             item=new CartItem();  
             item.setProduct(product); 
-            item.setQuantity(1);  
+            item.setQuantity(num);  
             //把新的購物項目加到map中
             map.put(product.getProductId(),item);
         }  
