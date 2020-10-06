@@ -23,9 +23,10 @@ public interface ProductDAO {
     //新增產品
     public void inserData(ShoppingProduct shoppingProduct);
     
-    
+    //刪除產品
     public void delete(ShoppingProduct shoppingProduct);
     
+    //價格搜尋
     public List<ShoppingProduct> PriceSearch(List<ShoppingProduct> products,int maxprice,int lowprice);
     
     
