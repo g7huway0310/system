@@ -3,25 +3,30 @@ package shoppingMallBean;
 import java.util.Map;
 
 public class OrderItem {
-	private String itemId;  
+	
+    private Integer seqno;
 	private String productId;
     private String orderId;        
-    private int quantity;       
-
-	private ShoppingProduct product;
+    private int quantity;    
+    private String description;
     
     public OrderItem(Map<String, Object> map) {
     	this.setOrderId((String)map.get("orderId"));
     	this.setQuantity((int)map.get("quantity"));
     	this.setProductId((String)map.get("productID"));
     }
-    public String getItemId() {
-		return itemId;
+    
+   
+	public OrderItem(Integer seqno, String productId, String orderId, int quantity, ShoppingProduct product) {
+		super();
+		this.seqno = seqno;
+		this.productId = productId;
+		this.orderId = orderId;
+		this.quantity = quantity;
+		
 	}
 
-	public void setItemId(String itemId) {
-		this.itemId = itemId;
-	}
+
 	public String getProductId() {
 		return productId;
 	}

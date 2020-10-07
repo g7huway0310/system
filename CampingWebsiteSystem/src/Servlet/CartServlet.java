@@ -51,7 +51,7 @@ public class CartServlet extends HttpServlet {
 			addTOCart(request,response);
 			break;
 		case "changeIn":
-			changeIn(request,response);//更改购物车商品数量
+			changeIn(request,response);
 			break;
 		case "delItem":
 			delete(request,response);
@@ -66,7 +66,7 @@ public class CartServlet extends HttpServlet {
 	}
 	private void addTOCart(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		 
-		BusinessServiceImp service=new BusinessServiceImp();
+		 BusinessServiceImp service=new BusinessServiceImp();
 		   
          String productId = request.getParameter("id");
          
@@ -112,7 +112,7 @@ public class CartServlet extends HttpServlet {
         
         service.changeQuantity(productId, quantity, cart);
         
-       show(request, response);
+        show(request, response);
 	}
 	private void delAll(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		BusinessServiceImp service=new BusinessServiceImp();
