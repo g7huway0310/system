@@ -9,6 +9,14 @@ public static final String host = "127.0.0.1";
 	
 	private static final String DBURL_Oracle = "jdbc:oracle:thin:@127.0.0.1:1521/XEPDB1";
 	
+	public static final String JNDI_DB_NAME = "java:comp/env/jdbc/xe";
+	
+	public static int getRecordsPerPage() {
+		return RECORDS_PER_PAGE;
+	}
+
+	private static final int RECORDS_PER_PAGE=20;
+	
 	public static final String USERID_Oracle = "scott";
 	
 	public static final String PSWD_Oracle = "tiger";
@@ -87,7 +95,6 @@ public static final String host = "127.0.0.1";
 		return CREATE_Table_ShoppingData_SQL;
 	}
 
-	
 	
 	
 

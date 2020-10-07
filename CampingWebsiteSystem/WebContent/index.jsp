@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"  %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -30,7 +32,7 @@
     <th>productPrice</th>
     <th></th>
     </tr>
-    <c:forEach items="${applicationScope.clist}" var="cty">
+    <c:forEach items="${pageProducts}" var="cty">
       <tr>
       <td>
       <a href="ProductServlet?opt=buyProduct&pid=${cty.productId}">${cty.productId}</a>
@@ -44,7 +46,46 @@
 	  </tr> 
 	</c:forEach>
 	</table>
-    <input tpye="text" >關鍵字搜尋</input>
+<table border="1">
+  <tr>
+    <td width='76'>
+        <c:if test="${pageNo > 1}">
+           <div id="pfirst">
+              <a href="<c:url value='PageServlet?pageNo=1' />">第一頁</a>
+           </div>
+        </c:if>
+     </td>
+     <td width='76'>
+        <c:if test="${pageNo > 1}">
+           <div id="pprev">
+              <a href="<c:url value='PageServlet?pageNo=${pageNo-1}' />">上一頁</a>
+           </div>
+        </c:if>  
+     </td>
+     <td width='76'>
+            <c:if test="${pageNo != totalPages}">
+                <div id="pnext">
+                   <a href="<c:url value='PageServlet?pageNo=${pageNo+1}' />">下一頁</a>
+                </div>
+            </c:if>
+     </td>  
+     <td width='76'>
+            <c:if test="${pageNo != totalPages}">
+                <div id="plast">
+                    <a href="<c:url value='PageServlet?pageNo=${totalPages}' />">最末頁</a>
+                </div>
+            </c:if>
+     </td>
+     <td width='176' align="center">
+                      第${pageNo}頁 / 共${totalPages}頁
+     </td>  
+</tr>
+</table>	
+<form action='PageServlet'>
+<input tpye="text" name='keyWord'>關鍵字搜尋</input>
+<input type="submit" value="送出"></p>
+</form>
+
      
 </nav>
 </body>

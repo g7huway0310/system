@@ -1,33 +1,44 @@
 package shoppingMallBean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class Order {
 	
-	private int orderId;            
-    private String orderNum;		
+	private int orderId;            		
     private int userId;            
-    private String orderDate;       
+    private Date orderDate;       
     private double money;			
     private int orderStatus;     	
     
     private List<OrderItem> oItem=new ArrayList<>();
     
 //    private User user=new User();
+    
+    
 
-    public Order() {
+	public Order() {
     }
-
-    public Order(Map<String, Object> map) {
-		this.setOrderId((int) map.get("orderId"));
-		this.setOrderNum((String) map.get("orderNum"));
-		this.setUserId((int) map.get("userId"));
-		this.setOrderDate((String) map.get("orderDate"));
-		this.setMoney((double) map.get("money"));
-		this.setOrderStatus((int) map.get("orderStatus"));
+	
+	public Date getOrderDate() {
+		return orderDate;
 	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
+
+	public Order(int orderId, int userId, Date orderDate, double money, int orderStatus, List<OrderItem> oItem) {
+	super();
+	this.orderId = orderId;
+	this.userId = userId;
+	this.orderDate = orderDate;
+	this.money = money;
+	this.orderStatus = orderStatus;
+	this.oItem = oItem;
+}
 
 	public int getOrderId() {
         return orderId;
@@ -37,15 +48,6 @@ public class Order {
         this.orderId = orderId;
     }
 
-    
-    public String getOrderNum() {
-		return orderNum;
-	}
-
-	public void setOrderNum(String orderNum) {
-		this.orderNum = orderNum;
-	}
-
 	public int getUserId() {
         return userId;
     }
@@ -54,13 +56,6 @@ public class Order {
         this.userId = userId;
     }
 
-    public String getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
 
 	public int getOrderStatus() {
 		return orderStatus;

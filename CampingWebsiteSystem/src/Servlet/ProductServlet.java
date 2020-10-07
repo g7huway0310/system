@@ -62,6 +62,7 @@ public class ProductServlet extends HttpServlet {
 		}
 	}
 	protected void queryByCategory(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		
 		int cId =Integer.parseInt(request.getParameter("cid"));
 		BusinessServiceImp dao=new BusinessServiceImp();
 		List<ShoppingProduct> searchList = dao.searchtype(cId);
@@ -86,16 +87,18 @@ public class ProductServlet extends HttpServlet {
 			List<ShoppingProduct> searchBList = pageBean.getSourceList();
 			
 			if(searchBList!=null){
-				//获取分页
+				
 				
 				Integer page =Integer.parseInt(request.getParameter("page"));
 				
 				if(page==null || page<1) page=1;
-				//封装成分页对象
+				
 				PageBean<ShoppingProduct> Pager = new PageBean<ShoppingProduct>(page,5,searchBList);
 				
 				request.getSession().setAttribute("searchProducts", Pager);
+				
 				response.sendRedirect("search.jsp");
+				
 				return;
 			}
 		}

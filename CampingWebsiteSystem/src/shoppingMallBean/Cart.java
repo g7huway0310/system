@@ -7,6 +7,14 @@ public class Cart {
 	//使用linkMap保留插入順序，有序的HashMap。
 	private Map<String,CartItem> map=new LinkedHashMap<String,CartItem>();
 	
+	private Map<String,OrderItem> Orderitem=new LinkedHashMap<String,OrderItem>();
+	
+	public Map<String, OrderItem> getOrderitem() {
+		return Orderitem;
+	}
+	public void setOrderitem(Map<String, OrderItem> orderitem) {
+		Orderitem = orderitem;
+	}
 	private double price;//總價
 	
 	public void add(ShoppingProduct product,int num){
