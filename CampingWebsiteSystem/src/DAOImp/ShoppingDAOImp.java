@@ -26,6 +26,14 @@ public class ShoppingDAOImp implements ProductDAO {
 		this.conn = connection;
 	}
 
+	public Connection getConn() {
+		return conn;
+	}
+
+	public void setConn(Connection conn) {
+		this.conn = conn;
+	}
+
 	public ShoppingDAOImp() {
 
 	}
@@ -45,7 +53,7 @@ public class ShoppingDAOImp implements ProductDAO {
 				String brands = rs.getString("PRODUCT_BRAND");
 				String spec = rs.getString("PRODUCT_SPEC");
 				int price = rs.getInt("PRODUCT_PRICE");
-				int stack = rs.getInt("PRODUCT_STACK");
+				int stack = rs.getInt("PRODUCT_STOCK");
 				
 				String feature=rs.getString("PRODUCT_FEATURE");
 				
@@ -84,7 +92,7 @@ public class ShoppingDAOImp implements ProductDAO {
 				String brands = rs.getString("PRODUCT_BRAND");
 				String spec = rs.getString("PRODUCT_SPEC");
 				int price = rs.getInt("PRODUCT_PRICE");
-				int stack = rs.getInt("PRODUCT_STACK");
+				int stack = rs.getInt("PRODUCT_STOCK");
 
 				ShoppingProduct product = new ShoppingProduct(id, brands, name, price, spec, stack, warring);
 //	      searchResult.append("商品品牌: "+brands+"\n"+
@@ -125,7 +133,7 @@ public class ShoppingDAOImp implements ProductDAO {
 				String name = rs.getString("PRODUCT_NAME");
 				int price = rs.getInt("PRODUCT_PRICE");
 				String spec = rs.getString("PRODUCT_SPEC");
-				int stack = rs.getInt("PRODUCT_STACK");
+				int stack = rs.getInt("PRODUCT_STOCK");
 				String warring = rs.getString("PRODUCT_WARRING");
 
 				ShoppingProduct product = new ShoppingProduct(id, brand, name, price, spec, stack, warring);
@@ -159,7 +167,7 @@ public class ShoppingDAOImp implements ProductDAO {
 			System.out.println("庫存不足");
 		} else {
 			try (PreparedStatement stmt = conn
-					.prepareStatement("update shoppingdata set product_stack=? where product_id=? ORDER BY PRODUCT_ID ")) {
+					.prepareStatement("update shoppingdata set PRODUCT_STOCK=? where product_id=? ORDER BY PRODUCT_ID ")) {
 				productStack = productStack - updateAmount;
 				stmt.setInt(1, productStack);
 				stmt.setString(2, productId);
@@ -231,11 +239,6 @@ public class ShoppingDAOImp implements ProductDAO {
 		}
 	}
 
-	public void createOrder(ShoppingProduct shoppingProduct) {
-		String sqlString = "INSERT INTO shoppingdata VALUES(?,?,?,?,?,?,?,?)";
-		
-
-	}
 
 	@Override
 	public List<ShoppingProduct> getAll() {
@@ -252,7 +255,7 @@ public class ShoppingDAOImp implements ProductDAO {
 			String name = rs.getString("PRODUCT_NAME");
 			int price = rs.getInt("PRODUCT_PRICE");
 			String spec = rs.getString("PRODUCT_SPEC");
-			int stack = rs.getInt("PRODUCT_STACK");
+			int stack = rs.getInt("PRODUCT_STOCK");
 			String warring = rs.getString("PRODUCT_WARRING");
 
 			ShoppingProduct product = new ShoppingProduct(id, brand, name, price, spec, stack, warring);

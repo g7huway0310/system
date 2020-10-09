@@ -22,9 +22,9 @@ public class createTable {
 			
 	    System.out.println(createTableOrderSql);
 	    
-	    pstmt.execute();
-//		psmt2.execute();
-//		psmt3.execute();
+//	    pstmt.execute();
+		psmt2.execute();
+		psmt3.execute();
         
 		System.out.println("query finished");
             

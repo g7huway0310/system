@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 
 import com.sun.org.apache.xpath.internal.operations.And;
 
+import ShoppingMallDAO.ProductPageDAO;
 import model.DBService_for_Oracle;
 import shoppingMallBean.ShoppingProduct;
 
@@ -65,6 +66,13 @@ public class ProductPageDAOImp {
 		return totalPages;
 	}
 	
+	//搜尋結果總頁數
+	public int getSearchTotalPage(String keyword) {
+		totalPages = (int) (Math.ceil( getSearchRecordCounts(keyword) / (double) recordsPerPage));
+		return totalPages;
+	}
+	
+	
 	//取得資料總比數
 	public long getRecordCounts() {
 		long count = 0; // 必須使用 long 型態
@@ -84,6 +92,34 @@ public class ProductPageDAOImp {
 		}
 		return count;
 	}
+	
+	public long getSearchRecordCounts(String keyword) {
+		long count = 0; // 必須使用 long 型態
+		String sql = "SELECT count(1) FROM shoppingdata where PRODUCT_BRAND like ?"; 
+		try (
+			Connection connection = ds.getConnection();
+			PreparedStatement ps = connection.prepareStatement(sql);
+			
+			
+		) {
+			ps.setString(1,"%" + keyword + "%");	
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				count = rs.getLong(1);
+				System.out.println(count);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new RuntimeException("MemberDaoImpl_Jdbc()#getRecordCounts()發生例外: " 
+										+ ex.getMessage());
+		}
+		return count;
+	}
+	
+	
+	
+	
+	
 	
 	public List<ShoppingProduct> getPageProducts() {
 		
@@ -121,7 +157,7 @@ public class ProductPageDAOImp {
 					String brands = rs.getString("PRODUCT_BRAND");
 					String spec = rs.getString("PRODUCT_SPEC");
 					int price = rs.getInt("PRODUCT_PRICE");
-					int stack = rs.getInt("PRODUCT_STACK");
+					int stack = rs.getInt("PRODUCT_STOCK");
 					String feature=rs.getString("PRODUCT_FEATURE");
 					int categortId = rs.getInt("CATEGORY_ID");
 					int click = rs.getInt("CLICKNUM");
@@ -150,10 +186,14 @@ public class ProductPageDAOImp {
 				+"from SHOPPINGDATA  "
 				+"ORDER BY SHOPPINGDATA.CATEGORY_ID)"
 				+"WHERE rn >= ? AND rn <= ? AND PRODUCT_BRAND like ?" ;
+		
 		String sql = sql0;
+		
 		System.out.println(sql);
 		// 由頁碼推算出該頁是由哪一筆紀錄開始(1 based)
+		
 		int startRecordNo = (pageNo - 1) * recordsPerPage + 1;
+		
 		int endRecordNo = (pageNo) * recordsPerPage;
 		// 由頁碼推算出該頁是由哪一筆紀錄開始(0 based)		
 //		int startRecordNo = (pageNo - 1) * recordsPerPage;
@@ -177,7 +217,7 @@ public class ProductPageDAOImp {
 					String brands = rs.getString("PRODUCT_BRAND");
 					String spec = rs.getString("PRODUCT_SPEC");
 					int price = rs.getInt("PRODUCT_PRICE");
-					int stack = rs.getInt("PRODUCT_STACK");
+					int stack = rs.getInt("PRODUCT_STOCK");
 					String feature=rs.getString("PRODUCT_FEATURE");
 					int categortId = rs.getInt("CATEGORY_ID");
 					int click = rs.getInt("CLICKNUM");
@@ -193,6 +233,7 @@ public class ProductPageDAOImp {
 		}
 		return list;
 	}
+	
 	
 
 }

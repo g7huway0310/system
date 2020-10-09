@@ -15,7 +15,7 @@ public static final String host = "127.0.0.1";
 		return RECORDS_PER_PAGE;
 	}
 
-	private static final int RECORDS_PER_PAGE=20;
+	private static final int RECORDS_PER_PAGE=10;
 	
 	public static final String USERID_Oracle = "scott";
 	
@@ -34,28 +34,26 @@ public static final String host = "127.0.0.1";
             + "CLICKNUM NUMBER,"
             + "PRIMARY KEY (PRODUCT_ID))";
 	
-	private static final String CREATE_Table_Order_SQL="CREATE TABLE ORDERS("
-           	+ "ORDERNO NUMBER NOT NULL,"
-            + "MEMBERID VARCHAR(2500),"
-            + "TOTALAMOUNT NUMBER,"
-            + "INVOICETITLE VARCHAR(70),"
-            + "ORDERDATE DATE,"
-            + "SHIPPINGDATE DATE,"
-            + "CANCELTAG VARCHAR(2500),"
-            + "PRIMARY KEY (ORDERNO))";
+	private static final String CREATE_Table_Order_SQL="Create Table ORDERS "
+			+ "(orderNo  INT GENERATED as IDENTITY constraint ORDERS_PK primary key, "
+			+ " memberId          varchar2(20), "
+			+ " totalAmount       number(11,1), "
+			+ " shippingAddress   varchar2(64), "
+			+ " invoiceTitle      varchar2(72), " 
+			+ " orderDate         Date"
+			+ " )";
+
 	
 	
-	
-	private static final String CREATE_Table_OrderItem_SQL="CREATE TABLE ORDERITEM("
-            + "SEQNO NUMBER NOT NULL,"
-            + "ORDERNO NUMBER,"
-            + "AMOUNT NUMBER,"
-            + "DESCRIPTION VARCHAR(70),"
-            + "PRODUCTID VARCHAR(45),"
-            + "INVOICETITLE VARCHAR(45),"
-            + "UNITPRICE NUMBER,"
-            + "DISCOUNT NUMBER,"
-            + "PRIMARY KEY (SEQNO))";
+	private static final String CREATE_Table_OrderItem_SQL="Create TABLE ORDERITEMS "
+			+ "(seqno number generated as identity constraint ORDERITEMS_PK primary key, "
+			+ " orderNo          int, "
+			+ " PRODUCT_ID       varchar2(72), "
+			+ " Description      varchar2(72), "
+			+ " amount           int, "
+			+ " unitPrice        number(18,1) "
+			+ " ) ";
+   
 	
 	
 	

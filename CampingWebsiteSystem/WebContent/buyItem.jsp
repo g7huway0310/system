@@ -51,7 +51,7 @@ th, td {
             </select>
 		<br>
 		<button type="submit">加入購物車</button>
-		<h4>详细信息</h4>
+		<h4>詳細資訊</h4>
 		<hr>
 		<table width="100%">
 			<tr>

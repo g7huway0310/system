@@ -25,7 +25,7 @@
       <td>${p.productId}</td>
       <td><a href="ProductServlet?opt=buyProduct&pid=${p.productId}">${p.productName}</td></a>
       <td>${p.productPrice}</td>
-      <td> <img alt="dd" src="/pt/${p.productId}-img.jpg"> </td>
+      <td> <img alt="圖片讀取失敗" src="/pt/${p.productId}-img.jpg"> </td>
       <td>
       <FORM  action="<c:url value='CartServlet?opt=add' />" method="POST">
                                 購買數量:

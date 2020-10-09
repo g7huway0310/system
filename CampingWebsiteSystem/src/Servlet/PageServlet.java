@@ -20,7 +20,9 @@ import shoppingMallBean.ShoppingProduct;
  * Servlet implementation class PageServlet
  */
 @WebServlet("/PageServlet")
+
 public class PageServlet extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
 	int pageNo = 1;
     /**
@@ -45,10 +47,18 @@ public class PageServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
-		String keyword = null;
+        
+		String parameter = request.getParameter("isChange");
+		
+		System.out.println(parameter);
+		
 		if (request.getParameter("keyWord")!=null) {
-			System.out.println(request.getParameter("keyWord"));
+			String keyword = request.getParameter("keyWord");
+		    session.setAttribute("keyWord", keyword);
+			pageNo = 1;
+			boolean flag=true;
 			SearchBrand(request,response);
+			
 		}else {
 			//讀取傳來的頁數
 			String pageNoStr = request.getParameter("pageNo");
@@ -84,12 +94,9 @@ public class PageServlet extends HttpServlet {
 			
 			request.setAttribute("baBean", service);
 			
-		
 			List<ShoppingProduct> pageProducts = service.getPageProducts();
 
 			request.setAttribute("pageProducts", pageProducts);
-			
-			
 			
 			int totalPages = service.getTotalPages();
 			
@@ -128,7 +135,7 @@ public class PageServlet extends HttpServlet {
 		
 		String keyword = request.getParameter("keyWord");
 		
-        String pageNoStr = request.getParameter("pageNo");
+		String pageNoStr = request.getParameter("pageNo");
 		
 		if (pageNoStr == null) {  
 			pageNo = 1;
@@ -153,17 +160,18 @@ public class PageServlet extends HttpServlet {
 				pageNo = 1;
 			}
 		}
+		
 		ProductPageDAOImp service=new ProductPageDAOImp();
 		
 		service.setPageNo(pageNo);
 		
 		request.setAttribute("baBean", service);
 		
-		
-		
 		List<ShoppingProduct> pageProducts = service.SearchBrandItem(keyword);
 		
-		int totalPages = service.getTotalPages();
+		int totalPages = service.getSearchTotalPage(keyword);
+		
+		System.out.println(totalPages);
 		
 		session.setAttribute("pageNo", String.valueOf(pageNo));
 		
@@ -174,8 +182,8 @@ public class PageServlet extends HttpServlet {
 		
 		// 使用Cookie來儲存目前讀取的網頁編號，Cookie的名稱為memberId + "pageNo"
 				// -----------------------
-				Cookie pnCookie = new Cookie("pageNo", String.valueOf(pageNo));
-				Cookie keyCookie=new Cookie("key", keyword);
+				Cookie pnCookie = new Cookie("SearchpageNo", String.valueOf(pageNo));
+				Cookie keyCookie=new Cookie("Searchkey", keyword);
 //			    // 設定Cookie的存活期為30天
 				pnCookie.setMaxAge(30 * 24 * 60 * 60);
 //			    // 設定Cookie的路徑為 Context Path		

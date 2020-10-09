@@ -1,9 +1,9 @@
 package Servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,89 +14,120 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import _04_ShoppingCart.model.OrderItemBean;
+import DAOImp.OrderServiceDAOImp;
+import ShoppingMallDAO.OrderServiceDAO;
 import shoppingMallBean.Cart;
 import shoppingMallBean.CartItem;
 import shoppingMallBean.Order;
 import shoppingMallBean.OrderItem;
-
 /**
  * Servlet implementation class ProcessOrderServlet
  */
 @WebServlet("/ProcessOrderServlet")
 public class ProcessOrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ProcessOrderServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doPost(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
-		String finalDecision = request.getParameter("finalDecision");	
-		
+		request.setCharacterEncoding("UTF-8");
+		System.out.println("Test");
+		String finalDecision = request.getParameter("finalDecision");
+
 		HttpSession session = request.getSession(false);
-		
-		Cart cart = (Cart)session.getAttribute("cart");
-		
-		
-		
+
+		Cart cart = (Cart) session.getAttribute("cart");
+
 		if (cart == null) {
 			// 處理訂單時如果找不到購物車(通常是Session逾時)，沒有必要往下執行
 			// 導向首頁
-			response.sendRedirect(getServletContext().getContextPath() + "/index.jsp"  );
+			response.sendRedirect(getServletContext().getContextPath() + "/index.jsp");
 			return;
 		}
 		// 如果使用者取消訂單
-		if  (finalDecision.equals("CANCEL")){
-			session.removeAttribute("ShoppingCart");
-			response.sendRedirect(response.encodeRedirectURL (request.getContextPath()));
-			return;  			// 一定要記得 return 
+		if (finalDecision.equals("CANCEL")) {
+			session.removeAttribute("cart");
+			response.sendRedirect(response.encodeRedirectURL(request.getContextPath()));
+			return; // 一定要記得 return
 		}
-		double orderPrice = cart.getPrice();
-		String shippingAddress = request.getParameter("ShippingAddress");  // 出貨地址
+		double orderPrice = cart.getPrice();// 取出訂單總金額
+
+		String shippingAddress = request.getParameter("SHIPPINGADDRESS"); // 出貨地址
+
+		String pay = request.getParameter("Pay");
+
+		String invoiceTitle = request.getParameter("invoiceTitle");
+
+		Date today = new Date();// 訂單新增時間
 		
-		Date today = new Date(); 
+        Order aOrder=new Order(0, 0, orderPrice, today, shippingAddress, 0, invoiceTitle);
 		
-	    Order aOrder=new Order(0, 0, today, orderPrice, 0, null);
-	    
-	    Set<OrderItem> items = new HashSet<OrderItem>();//訂單明細
-	    
-	    Map<String, OrderItem> orders = cart.getOrderitem();
-	    
-	    Set<String> keySet = orders.keySet();
-	    
-	    for(String key:keySet) {
-	    	OrderItem orderItem = orders.get(key);
-	    	String orderId = orderItem.getOrderId();
-	    	String productId = orderItem.getProductId();
-	    	int quantity = orderItem.getQuantity();
-	    	
-	    	
-	    	
-	    }
-	    
-	    
-	    
-	   
-	    
-	    
+		// 新建一個存放訂單明細的Set物件: items
+		List<OrderItem> oItem = new ArrayList<OrderItem>();// 訂單明細
+
+		Map<String, CartItem> map = cart.getMap();
+
+		Set<String> keySet = map.keySet();
+
+	
+		for (String key : keySet) {
+			
+			CartItem cartItem = map.get(key);
+
+			String productName = cartItem.getProductName();
+			
+			double price = cartItem.getPrice();
+			
+			//取得細項id
+			String productId = cartItem.getProduct().getProductId();
+			
+			//取得細項描述(商品名稱)
+			
+			String description = cartItem.getProduct().getProductName();
+			
+			System.out.println(productId);
+			
+			Double quantity =new Double(cartItem.getQuantity());
+		
+			OrderItem aItem = new OrderItem(null, productId, 10.0, price, quantity, description);
+			                     
+			oItem.add(aItem);
+
+		}
+		aOrder.setoItem(oItem);
+
+		try {
+
+			OrderServiceDAO service = new OrderServiceDAOImp();
+
+			service.orderAdd(aOrder);
+		
+			session.removeAttribute("cart");
+			
+			response.sendRedirect(response.encodeRedirectURL("OrderSuccess.jsp"));
+			
+			return;
+
+		} catch (RuntimeException ex) {
+			String message = ex.getMessage();
+			String shortMsg = "";
+			shortMsg = message.substring(message.indexOf(":") + 1);
+			System.out.println(shortMsg);
+			session.setAttribute("OrderErrorMessage", "處理訂單時發生異常: " + shortMsg + "，請調正訂單內容");
+			// System.out.println("處理訂單時發生異常: " + message);
+//			response.sendRedirect(response.encodeRedirectURL("../_04_ShoppingCart/ShowCartContent.jsp"));
+			return;
+		}
+
 	}
 
 }

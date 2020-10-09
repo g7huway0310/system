@@ -140,7 +140,7 @@ public class CartServlet extends HttpServlet {
 //			response.sendRedirect("user/usercart.jsp");
 //		}else{
 			//跳轉
-			response.sendRedirect("showcart.jsp");
+	    response.sendRedirect("showcart.jsp");
 //		}
 	}
 

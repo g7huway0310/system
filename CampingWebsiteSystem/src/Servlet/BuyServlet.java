@@ -51,9 +51,15 @@ public class BuyServlet extends HttpServlet {
 		
 		System.out.println(price);
 		
+		System.out.println("INSIDE");
+		
 		RequestDispatcher rd = request.getRequestDispatcher("confirmOrder.jsp");
 		
+		System.out.println("INSIDE2");
+		
 		rd.forward(request, response);
+		
+		System.out.println("INSIDE3");
 		
 		return;
 		
