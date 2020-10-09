@@ -29,10 +29,6 @@
     function updateCount(count) {
         document.getElementById("count").innerHTML = "Clicked "+count+" times!";
     }
-    function ShowStr(x){
-    	var Str=document.getElementById(x).value;
-    	document.forms[0].isChange.value = "change";
-    }
 </script>
 </head>
 <body>
@@ -41,7 +37,7 @@
         <li><a href="http://localhost:8080/CampingWebsiteSystem/list.jsp?type=0">露營帳篷</a></li>
         <li><a href="http://localhost:8080/CampingWebsiteSystem/list.jsp?type=1">天幕/客廳帳篷/炊事帳篷</a></li>
         <li><a href="http://localhost:8080/CampingWebsiteSystem/list.jsp?type=2">戶外寢具</a></li>
-         <li><a href="http://localhost:8080/CampingWebsiteSystem/list.jsp?type=3">地布</a></li>
+        <li><a href="http://localhost:8080/CampingWebsiteSystem/list.jsp?type=3">地布</a></li>
         <li><a href="http://localhost:8080/CampingWebsiteSystem/list.jsp?type=4">露營傢具</a></li>
         <li><a href="http://localhost:8080/CampingWebsiteSystem/list.jsp?type=5">燈具</a></li>
         <li><a href="http://localhost:8080/CampingWebsiteSystem/list.jsp?type=6">炊具</a></li>
@@ -105,13 +101,22 @@
      </td>  
 </tr>
 </table>	
+<hr></hr>
+<h3>關鍵字搜尋</h3>
 <form action='PageServlet'>
-<input type="hidden" name="isChange"  value=""> 
-<input tpye="text" name='keyWord' onchange="ShowStr(this.id)">關鍵字搜尋</input>
-<input type="submit" value="送出"></p>
+<input type="text" name='keyWord'></input>
+<input type="hidden" name="searchType" value="keyWord">
+<input type="submit" value="送出"></input>
 </form>
-
-     
+<hr></hr>
+<h3>價錢範圍搜尋</h3>
+<form action='SearchServlet'>
+<input type="hidden" name="searchType" value="price"></input>
+<input type="hidden" name="category_id" value="2"></input>
+<input type="text" name='minPrice'></input>~
+<input type="text" name='maxPrice'></input>
+<input type="submit" value="送出"></input>
+</form>
 </nav>
 </body>
 </html>

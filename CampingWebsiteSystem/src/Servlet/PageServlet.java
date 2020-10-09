@@ -24,7 +24,10 @@ import shoppingMallBean.ShoppingProduct;
 public class PageServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+	
 	int pageNo = 1;
+	
+	int searchPageNo = 1;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -47,103 +50,112 @@ public class PageServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession(false);
-        
-		String parameter = request.getParameter("isChange");
 		
-		System.out.println(parameter);
-		
-		if (request.getParameter("keyWord")!=null) {
-			String keyword = request.getParameter("keyWord");
-		    session.setAttribute("keyWord", keyword);
-			pageNo = 1;
-			boolean flag=true;
+		if (request.getParameter("searchJSP")!=null) {
+			
+			System.out.println(searchPageNo);
+			
 			SearchBrand(request,response);
 			
 		}else {
-			//讀取傳來的頁數
-			String pageNoStr = request.getParameter("pageNo");
-			
-			if (pageNoStr == null) {  
-				pageNo = 1;
-				// 讀取瀏覽器送來的所有 Cookies
-				Cookie[] cookies = request.getCookies();
-				if (cookies != null) {
-					for (Cookie c : cookies) {
-						
-							if (c.getName().equals("pageNo")) {
-								try {
-									pageNo = Integer.parseInt(c.getValue().trim());
-								} catch (NumberFormatException e) {
-									;
+			if (request.getParameter("keyWord")!=null) {
+				
+				String keyword = request.getParameter("keyWord");
+				
+				SearchBrand(request,response);
+				
+			}else {
+				//讀取傳來的頁數
+				String pageNoStr = request.getParameter("pageNo");
+				
+				if (pageNoStr == null) {  
+					pageNo = 1;
+					// 讀取瀏覽器送來的所有 Cookies
+					Cookie[] cookies = request.getCookies();
+					if (cookies != null) {
+						for (Cookie c : cookies) {
+							
+								if (c.getName().equals("pageNo")) {
+									try {
+										pageNo = Integer.parseInt(c.getValue().trim());
+									} catch (NumberFormatException e) {
+										;
+									}
+									break;
 								}
-								break;
-							}
-						
+							
+						}
+					}
+				} else {
+					try {
+						pageNo = Integer.parseInt(pageNoStr.trim());
+					} catch (NumberFormatException e) {
+						pageNo = 1;
 					}
 				}
-			} else {
-				try {
-					pageNo = Integer.parseInt(pageNoStr.trim());
-				} catch (NumberFormatException e) {
-					pageNo = 1;
-				}
-			}
-			ProductPageDAOImp service=new ProductPageDAOImp();
-			
-			service.setPageNo(pageNo);
-			
-			request.setAttribute("baBean", service);
-			
-			List<ShoppingProduct> pageProducts = service.getPageProducts();
+				ProductPageDAOImp service=new ProductPageDAOImp();
+				
+				service.setPageNo(pageNo);
+				
+				request.setAttribute("baBean", service);
+				
+				List<ShoppingProduct> pageProducts = service.getPageProducts();
 
-			request.setAttribute("pageProducts", pageProducts);
-			
-			int totalPages = service.getTotalPages();
-			
-			session.setAttribute("pageNo", String.valueOf(pageNo));
-			
-			request.setAttribute("totalPages", totalPages);
-			// 將讀到的一頁資料放入request物件內，成為它的屬性物件
-			
-			
-			// 使用Cookie來儲存目前讀取的網頁編號，Cookie的名稱為memberId + "pageNo"
-					// -----------------------
-					Cookie pnCookie = new Cookie("pageNo", String.valueOf(pageNo));
-					
-//				    // 設定Cookie的存活期為30天
-					pnCookie.setMaxAge(30 * 24 * 60 * 60);
-//				    // 設定Cookie的路徑為 Context Path		
-					pnCookie.setPath(request.getContextPath());
-//					// 將Cookie加入回應物件內
-					response.addCookie(pnCookie);
-					// -----------------------
-			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-			
-			rd.forward(request, response);
-			
-			return;
+				request.setAttribute("pageProducts", pageProducts);
+				
+				int totalPages = service.getTotalPages();
+				
+				session.setAttribute("pageNo", String.valueOf(pageNo));
+				
+				request.setAttribute("totalPages", totalPages);
+				// 將讀到的一頁資料放入request物件內，成為它的屬性物件
+				
+				
+				// 使用Cookie來儲存目前讀取的網頁編號，Cookie的名稱為memberId + "pageNo"
+						// -----------------------
+						Cookie pnCookie = new Cookie("pageNo", String.valueOf(pageNo));
+						
+//					    // 設定Cookie的存活期為30天
+						pnCookie.setMaxAge(30 * 24 * 60 * 60);
+//					    // 設定Cookie的路徑為 Context Path		
+						pnCookie.setPath(request.getContextPath());
+//						// 將Cookie加入回應物件內
+						response.addCookie(pnCookie);
+						// -----------------------
+				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+				
+				rd.forward(request, response);
+				
+				return;
+			}	
 		}
-		
-		
-		
-		
 	}
 	
 	private void SearchBrand(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		
+		String keyword;
+		
 		HttpSession session = request.getSession(false);
 		
-		String keyword = request.getParameter("keyWord");
+		if (session.getAttribute("keyWords")==null) {
+			 keyword = request.getParameter("keyWord");
+			 session.setAttribute("keyWords", keyword);
+			 System.out.println(keyword);
+		}else {
+			 keyword=(String) session.getAttribute("keyWords");
+		}
 		
-		String pageNoStr = request.getParameter("pageNo");
+		String pageNoStr = request.getParameter("searchPageNo");
+		
+		System.out.println("目前頁面是"+pageNoStr);
 		
 		if (pageNoStr == null) {  
-			pageNo = 1;
+			searchPageNo = 1;
 			// 讀取瀏覽器送來的所有 Cookies
 			Cookie[] cookies = request.getCookies();
 			if (cookies != null) {
 				for (Cookie c : cookies) {
-					if (c.getName().equals("pageNo")) {
+					if (c.getName().equals("searchPageNo")) {
 						try {
 							pageNo = Integer.parseInt(c.getValue().trim());
 						} catch (NumberFormatException e) {
@@ -155,34 +167,35 @@ public class PageServlet extends HttpServlet {
 			}
 		} else {
 			try {
-				pageNo = Integer.parseInt(pageNoStr.trim());
+				searchPageNo = Integer.parseInt(pageNoStr.trim());
 			} catch (NumberFormatException e) {
-				pageNo = 1;
+				searchPageNo = 1;
 			}
 		}
 		
 		ProductPageDAOImp service=new ProductPageDAOImp();
 		
-		service.setPageNo(pageNo);
+		service.setSearchPageNo(searchPageNo);
 		
 		request.setAttribute("baBean", service);
+		
+		
+		System.out.println("關鍵字"+keyword);
 		
 		List<ShoppingProduct> pageProducts = service.SearchBrandItem(keyword);
 		
 		int totalPages = service.getSearchTotalPage(keyword);
 		
-		System.out.println(totalPages);
+		session.setAttribute("searchPageNo", String.valueOf(searchPageNo));
 		
-		session.setAttribute("pageNo", String.valueOf(pageNo));
-		
-		request.setAttribute("totalPages", totalPages);
+		request.setAttribute("searchtotalPages", totalPages);
 		// 將讀到的一頁資料放入request物件內，成為它的屬性物件
 		
-		request.setAttribute("pageProducts", pageProducts);
+		request.setAttribute("searchpageProducts", pageProducts);
 		
 		// 使用Cookie來儲存目前讀取的網頁編號，Cookie的名稱為memberId + "pageNo"
 				// -----------------------
-				Cookie pnCookie = new Cookie("SearchpageNo", String.valueOf(pageNo));
+				Cookie pnCookie = new Cookie("SearchpageNo", String.valueOf(searchPageNo));
 				Cookie keyCookie=new Cookie("Searchkey", keyword);
 //			    // 設定Cookie的存活期為30天
 				pnCookie.setMaxAge(30 * 24 * 60 * 60);
@@ -192,7 +205,90 @@ public class PageServlet extends HttpServlet {
 				response.addCookie(pnCookie);
 				response.addCookie(keyCookie);
 				// -----------------------
-		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+		
+	    RequestDispatcher rd = request.getRequestDispatcher("searchResult.jsp");
+		
+		rd.forward(request, response);
+		
+		return;
+		
+	}
+    private void SearchPrice(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+		
+		String keyword;
+		
+		HttpSession session = request.getSession(false);
+		
+		if (session.getAttribute("keyWords")==null) {
+			 keyword = request.getParameter("keyWord");
+			 session.setAttribute("keyWords", keyword);
+			 System.out.println(keyword);
+		}else {
+			 keyword=(String) session.getAttribute("keyWords");
+		}
+		
+		String pageNoStr = request.getParameter("searchPageNo");
+		
+		System.out.println("目前頁面是"+pageNoStr);
+		
+		if (pageNoStr == null) {  
+			searchPageNo = 1;
+			// 讀取瀏覽器送來的所有 Cookies
+			Cookie[] cookies = request.getCookies();
+			if (cookies != null) {
+				for (Cookie c : cookies) {
+					if (c.getName().equals("searchPageNo")) {
+						try {
+							pageNo = Integer.parseInt(c.getValue().trim());
+						} catch (NumberFormatException e) {
+							;
+						}
+						break;
+					}
+				}
+			}
+		} else {
+			try {
+				searchPageNo = Integer.parseInt(pageNoStr.trim());
+			} catch (NumberFormatException e) {
+				searchPageNo = 1;
+			}
+		}
+		
+		ProductPageDAOImp service=new ProductPageDAOImp();
+		
+		service.setSearchPageNo(searchPageNo);
+		
+		request.setAttribute("baBean", service);
+		
+		
+		System.out.println("關鍵字"+keyword);
+		
+		List<ShoppingProduct> pageProducts = service.SearchBrandItem(keyword);
+		
+		int totalPages = service.getSearchTotalPage(keyword);
+		
+		session.setAttribute("searchPageNo", String.valueOf(searchPageNo));
+		
+		request.setAttribute("searchtotalPages", totalPages);
+		// 將讀到的一頁資料放入request物件內，成為它的屬性物件
+		
+		request.setAttribute("searchpageProducts", pageProducts);
+		
+		// 使用Cookie來儲存目前讀取的網頁編號，Cookie的名稱為memberId + "pageNo"
+				// -----------------------
+				Cookie pnCookie = new Cookie("SearchpageNo", String.valueOf(searchPageNo));
+				Cookie keyCookie=new Cookie("Searchkey", keyword);
+//			    // 設定Cookie的存活期為30天
+				pnCookie.setMaxAge(30 * 24 * 60 * 60);
+//			    // 設定Cookie的路徑為 Context Path		
+				pnCookie.setPath(request.getContextPath());
+//				// 將Cookie加入回應物件內
+				response.addCookie(pnCookie);
+				response.addCookie(keyCookie);
+				// -----------------------
+		
+	    RequestDispatcher rd = request.getRequestDispatcher("searchResult.jsp");
 		
 		rd.forward(request, response);
 		

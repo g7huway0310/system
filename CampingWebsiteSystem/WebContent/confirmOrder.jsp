@@ -72,7 +72,7 @@ function reconfirmOrder() {
 	        <td></td>
 	        </tr>
 		</table>
-	<input type="hidden" name="finalDecision"  value="">  
+	<input type="hidden" name="finalDecision">  
 	
     <input type="button" name="OrderBtn"  value="確定送出" onclick="reconfirmOrder()">
     
