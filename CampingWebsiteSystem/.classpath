@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="28"/>
+	<classpathentry kind="src" path="20"/>
+	<classpathentry kind="src" path="31"/>
+	<classpathentry kind="src" path="24"/>
+	<classpathentry kind="src" path="10"/>
+	<classpathentry kind="src" path="7"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/tomcat9/apache-tomcat-9.0.38/lib/servlet-api.jar">
