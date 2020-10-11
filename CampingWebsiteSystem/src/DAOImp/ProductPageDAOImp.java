@@ -316,6 +316,73 @@ public class ProductPageDAOImp {
 		return list;
 	}
 	
+public List<ShoppingProduct> SearchBrandSorted(String keyWord) {
+		
+        List<ShoppingProduct> list = new ArrayList<ShoppingProduct>();
+		
+		String sql0 = "select *"
+				+"from("
+				+"select rownum as rn, SHOPPINGDATA.* "
+				+"from SHOPPINGDATA "
+				+"WHERE PRODUCT_BRAND like ? OR PRODUCT_NAME like ?"
+				+"ORDER BY SHOPPINGDATA.PRODUCT_PRICE)"
+				+"WHERE rn >= ? AND rn <= ?" ;
+		String sql = sql0;
+		
+		System.out.println(sql);
+		// 由頁碼推算出該頁是由哪一筆紀錄開始(1 based)
+        int startRecordNo = (searchPageNo - 1) * recordsPerPage + 1;
+		
+		int endRecordNo = (searchPageNo) * recordsPerPage;
+		
+		System.out.println(sql0);
+		
+		// 由頁碼推算出該頁是由哪一筆紀錄開始(0 based)		
+//		int startRecordNo = (searchPageNo - 1) * recordsPerPage;
+//		
+//		int endRecordNo = recordsPerPage;
+		try (
+			Connection connection = ds.getConnection(); 
+			PreparedStatement ps = connection.prepareStatement(sql);
+		) {
+			ps.setString(1, "%"+keyWord+"%");
+			ps.setString(2, "%"+keyWord+"%");
+			ps.setBigDecimal(3, new BigDecimal(startRecordNo));
+			ps.setBigDecimal(4, new BigDecimal(endRecordNo));
+			
+			try (
+				ResultSet rs = ps.executeQuery();
+			) {
+				// 只要還有紀錄未取出，rs.next()會傳回true
+				// 迴圈內將逐筆取出ResultSet內的紀錄
+				while (rs.next()) {
+					String id = rs.getString("PRODUCT_ID");
+					String name = rs.getString("PRODUCT_NAME");
+					String warring = rs.getString("PRODUCT_WARRING");
+					String brands = rs.getString("PRODUCT_BRAND");
+					String spec = rs.getString("PRODUCT_SPEC");
+					int price = rs.getInt("PRODUCT_PRICE");
+					int stack = rs.getInt("PRODUCT_STOCK");
+					String feature=rs.getString("PRODUCT_FEATURE");
+					int categortId = rs.getInt("CATEGORY_ID");
+					int click = rs.getInt("CLICKNUM");
+					ShoppingProduct product=new ShoppingProduct(id, brands, name, price, categortId, spec, stack, warring, feature, click);
+					
+					list.add(product);
+				}
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new RuntimeException("BookDaoImpl_Jdbc()#getPageBooks()發生例外: " 
+										+ ex.getMessage());
+		}
+		
+		return list;
+	}
+	
+	
+	
+	
 	
 	public List<ShoppingProduct> SearchPrice(int minPrice,int maxPrice,int typeid){
 		
@@ -325,11 +392,10 @@ public class ProductPageDAOImp {
 				+"from("
 				+"select rownum as rn, SHOPPINGDATA.* "
 				+"from SHOPPINGDATA "
-				+"WHERE PRODUCT_PRICE BETWEEN ? AND ? AND CATEGORY_ID IN ?"
+				+"WHERE (PRODUCT_PRICE BETWEEN ? AND ?) AND CATEGORY_ID = ? "
 				+"ORDER BY SHOPPINGDATA.CATEGORY_ID)"
 				+"WHERE rn >= ? AND rn <= ?" ;
-		
-		String sqlPriceString="select *from(select rownum as rn, SHOPPINGDATA.* from SHOPPINGDATA WHERE PRODUCT_PRICE BETWEEN ? AND ? AND CATEGORY_ID=? ORDER BY SHOPPINGDATA.CATEGORY_ID)WHERE rn >= ? AND rn <= ?";
+	
 		
 		String sql = sql0;
 		
@@ -339,13 +405,15 @@ public class ProductPageDAOImp {
 		
 		int endRecordNo = (searchPageNo) * recordsPerPage;
 		
+		System.out.println(minPrice+" "+maxPrice+" "+typeid+startRecordNo+" "+endRecordNo);
+		
 		// 由頁碼推算出該頁是由哪一筆紀錄開始(0 based)		
 //		int startRecordNo = (searchPageNo - 1) * recordsPerPage;
 //		
 //		int endRecordNo = recordsPerPage;
 		try (
 			Connection connection = ds.getConnection(); 
-			PreparedStatement ps = connection.prepareStatement(sqlPriceString);
+			PreparedStatement ps = connection.prepareStatement(sql0);
 		) {
 			ps.setInt(1, minPrice);
 			ps.setInt(2, maxPrice);
@@ -373,6 +441,8 @@ public class ProductPageDAOImp {
 					
 					list.add(product);
 				}
+			} finally {
+				
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();

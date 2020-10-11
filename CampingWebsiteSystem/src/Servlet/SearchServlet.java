@@ -48,12 +48,16 @@ public class SearchServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-        String opt = request.getParameter("searchType");
-		System.out.println(opt);
+        
+		String opt = request.getParameter("searchType");
+		
+        System.out.println(opt);
+		
 		switch(opt)
+		
 		{
 		case "keyWord":
-			String keyword = request.getParameter("keyWord");
+			String keyword = request.getParameter("q");
 			SearchBrand(request,response);
 			break;
 		case "price":
@@ -63,6 +67,7 @@ public class SearchServlet extends HttpServlet {
 			break;
 		}
 	}
+	
     private void SearchBrand(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		
 		String keyword;
@@ -201,7 +206,7 @@ public class SearchServlet extends HttpServlet {
 	
 	request.setAttribute("baBean", service);
 	
-	List<ShoppingProduct> pageProducts = service.SearchPrice(maxPrice, minPrice,category_id);
+	List<ShoppingProduct> pageProducts = service.SearchPrice(minPrice, maxPrice,category_id);
 	
 	
 	

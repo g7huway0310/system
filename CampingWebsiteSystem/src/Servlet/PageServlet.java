@@ -135,6 +135,8 @@ public class PageServlet extends HttpServlet {
 		
 		String keyword;
 		
+		Object keywords = null;
+		
 		HttpSession session = request.getSession(false);
 		
 		if (session.getAttribute("keyWords")==null) {
@@ -182,8 +184,14 @@ public class PageServlet extends HttpServlet {
 		
 		System.out.println("關鍵字"+keyword);
 		
-		List<ShoppingProduct> pageProducts = service.SearchBrandItem(keyword);
+		List<ShoppingProduct> pageProducts;
 		
+		if (request.getParameter("sortParm")!=null) {
+			pageProducts = service.SearchBrandSorted(keyword);
+			request.setAttribute("sortParm", "price");
+		}else {
+			pageProducts = service.SearchBrandItem(keyword); 
+		}
 		int totalPages = service.getSearchTotalPage(keyword);
 		
 		session.setAttribute("searchPageNo", String.valueOf(searchPageNo));
@@ -206,13 +214,17 @@ public class PageServlet extends HttpServlet {
 				response.addCookie(keyCookie);
 				// -----------------------
 		
+	   	
+	    
 	    RequestDispatcher rd = request.getRequestDispatcher("searchResult.jsp");
 		
 		rd.forward(request, response);
 		
 		return;
 		
+		
 	}
+	
     private void SearchPrice(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		
 		String keyword;
@@ -264,8 +276,13 @@ public class PageServlet extends HttpServlet {
 		
 		System.out.println("關鍵字"+keyword);
 		
-		List<ShoppingProduct> pageProducts = service.SearchBrandItem(keyword);
+		List<ShoppingProduct> pageProducts;
 		
+		if (request.getParameter("sortParm")!=null) {
+			pageProducts = service.SearchBrandSorted(keyword);
+		}else {
+			pageProducts = service.SearchBrandItem(keyword);	
+		}
 		int totalPages = service.getSearchTotalPage(keyword);
 		
 		session.setAttribute("searchPageNo", String.valueOf(searchPageNo));
