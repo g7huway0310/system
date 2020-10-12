@@ -18,8 +18,8 @@ public class initShoppingdata {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		String qryInsert = "insert into shoppingdata values(?,?,?,?,?,?,?,?,?,?)";// 動態SQL指令
-		try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/XEPDB1", "scott",
-				"tiger"); PreparedStatement pstmt = conn.prepareStatement(qryInsert);// 因為是insert所以用PreparedStatement來接
+		try (Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/XEPDB1", "project2",
+				"project2"); PreparedStatement pstmt = conn.prepareStatement(qryInsert);// 因為是insert所以用PreparedStatement來接
 		) {
 			File file = new File("C:\\data.csv");
 

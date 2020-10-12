@@ -7,7 +7,7 @@ public class DBService_for_Oracle {
 
 	public static final String DB_TYPE = DB_ORACLE;
 
-	private static final String DBURL_Oracle = "jdbc:oracle:thin:@127.0.0.1:1521/XEPDB1";
+	private static final String DBURL_Oracle = "jdbc:oracle:thin:@//localhost:1521/XEPDB1";
 
 	public static final String JNDI_DB_NAME = "java:comp/env/jdbc/xe";
 
@@ -17,9 +17,9 @@ public class DBService_for_Oracle {
 
 	private static final int RECORDS_PER_PAGE = 10;
 
-	public static final String USERID_Oracle = "scott";
+	public static final String USERID_Oracle = "project2";
 
-	public static final String PSWD_Oracle = "tiger";
+	public static final String PSWD_Oracle = "project2";
 
 	private static final String CREATE_Table_ShoppingData_SQL = "CREATE TABLE SHOPPINGDATA("
 			+ "PRODUCT_ID VARCHAR(45) NOT NULL," + "PRODUCT_BRAND VARCHAR(2500),"

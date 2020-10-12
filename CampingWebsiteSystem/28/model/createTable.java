@@ -22,7 +22,7 @@ public class createTable {
 
 			System.out.println(createTableOrderSql);
 
-//	    pstmt.execute();
+       	    pstmt.execute();
 			psmt2.execute();
 			psmt3.execute();
 

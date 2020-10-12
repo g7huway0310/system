@@ -38,7 +38,7 @@ public class OrderDAOImp implements OrderDAO {
 
 		// TODO Auto-generated method stub
 		String sqlOrder = "insert into ORDERS" + " (MEMBERID, TOTALAMOUNT, SHIPPINGADDRESS,"
-				+ " INVOICETITLE,ORDERSTATUS,ORDERDATE) " + " values(?,?,?,?,?,?)";
+				+ " INVOICETITLE,ORDERDATE) " + " values(?,?,?,?,?)";
 		String sqlOrderitems = "Insert Into OrderItems (orderNo, PRODUCT_ID," + " description, amount, unitPrice) "
 				+ " values(?, ?, ?, ?, ?) ";
 		System.out.println("break");
@@ -51,13 +51,11 @@ public class OrderDAOImp implements OrderDAO {
 			psmt.setDouble(1, order.getMemberId());
 			psmt.setDouble(2, order.getTotalAmount());
 			psmt.setString(3, order.getShippingAddress());
-			System.out.println(order.getShippingAddress());
 			psmt.setString(4, order.getInvoiceTitle());
-			psmt.setDouble(5, order.getOrderStatus());
 			Timestamp ts = new Timestamp(order.getOrderDate().getTime());
-			psmt.setTimestamp(6, ts);
+			psmt.setTimestamp(5, ts);
 
-			psmt.executeUpdate();
+		    psmt.execute();
 
 			int id = 0;
 
