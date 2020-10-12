@@ -109,11 +109,11 @@ public class OrderDAOImp implements OrderDAO {
 	public Order findOrder(int orderid) {
 		Order ob = null;
 		DataSource ds = null;
-		Set<OrderItem> set = null;
+		ArrayList list=null;
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource) ctx.lookup(DBService_for_Oracle.JNDI_DB_NAME);
-			Connection connection = ds.getConnection();
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException("OrderDaoImpl類別#getOrder()-1發生例外: " + ex.getMessage());
@@ -126,7 +126,7 @@ public class OrderDAOImp implements OrderDAO {
 			PreparedStatement ps = con.prepareStatement(sql);
 			PreparedStatement ps1 = con.prepareStatement(sql1);
 		) {
-			ps.setInt(1, orderNo);
+			ps.setInt(1, orderid);
 			try (
 				ResultSet rs = ps.executeQuery();
 			) {
@@ -137,32 +137,32 @@ public class OrderDAOImp implements OrderDAO {
 					Timestamp orderDate = rs.getTimestamp("orderDate");
 					String shippingAddress = rs.getString("shippingAddress");
 					double totalAmount = rs.getDouble("totalAmount");
-					
 				    ob=new Order(no, id, totalAmount, orderDate, shippingAddress, invoiceTitle, null);
 				}
 			}
-			ps1.setInt(1, orderNo);
+			ps1.setInt(1, orderid);
 			try (
 				ResultSet rs = ps1.executeQuery();
 			) {
-				ArrayList list=new ArrayList<OrderItem>();
-				
 				while (rs.next()) {
 					int seqno = rs.getInt("seqNo");
 					Double orderNo = rs.getDouble("orderNo");
-					String productId = rs.getString("bookId");
+					String productId = rs.getString("Product_id");
 					String description = rs.getString("description");
 					Double quantity = rs.getDouble("amount");
-					Double unitPrice = rs.getDouble("unitPrice");
+					Double unitPrice = rs.getDouble("unitprice");
 					OrderItem oi = new OrderItem(seqno, productId, orderNo, unitPrice, quantity, description);
+					System.out.println("ssss"+oi);
+					
 					list.add(oi);
 				}
 				ob.setoItem(list);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			throw new RuntimeException("OrderDaoImpl類別#getOrder()-2發生例外: " + ex.getMessage());
+			
 		}
+		System.out.println("pass2");
 		return ob;
 		
 		
@@ -210,14 +210,12 @@ public class OrderDAOImp implements OrderDAO {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource) ctx.lookup(DBService_for_Oracle.JNDI_DB_NAME);
-			Connection connection = ds.getConnection();
-			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException("OrderDaoImpl類別#getOrder()-1發生例外: " + ex.getMessage());
 		}
 		List<Order> list = new ArrayList<Order>();
-		String sql = "SELECT OrderNo FROM Orders where memberId = ? Order by orderDate desc ";
+		String sql = "SELECT OrderNo FROM Orders where memberId = ? Order by orderdate desc ";
 		try (
 				Connection con = ds.getConnection();
 				PreparedStatement ps = con.prepareStatement(sql);
@@ -228,12 +226,14 @@ public class OrderDAOImp implements OrderDAO {
 				) {
 					while (rs.next()) {
 						Integer no = rs.getInt(1);
-						list.add(findOrder(orderNo));
+						list.add(findOrder(no));
 					}
 				}
 		} catch(SQLException ex){
 			throw new RuntimeException(ex);
 		}
+		
+		System.out.println("pass");
 		return list;
 	}
 
