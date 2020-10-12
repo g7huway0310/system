@@ -29,7 +29,7 @@ function deAll(){
 	document.forms[0].submit();
 }
 function checkout(){
-	document.forms[0].action="<c:url value='BuyServlet'/>"
+	document.forms[0].action="menberGuest.jsp"
 	document.forms[0].method="POST";
 	document.forms[0].submit();
 }
@@ -124,7 +124,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</td>
 		<td colspan="2"><Input type="button" name="checkout" value="結算" onclick="checkout()"></Input></td>
 		
-		<a>>繼續選購</a>
+		<a >>繼續選購</a>
 		
 	</table>
 	<form>

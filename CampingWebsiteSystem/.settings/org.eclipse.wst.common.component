@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
     <wb-module deploy-name="CampingWebsiteSystem">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/28"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/20"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/31"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/24"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/10"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/7"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <property name="context-root" value="CampingWebsiteSystem"/>
         <property name="java-output-path" value="/CampingWebsiteSystem/build/classes"/>
     </wb-module>
