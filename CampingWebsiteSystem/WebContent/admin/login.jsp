@@ -31,7 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+ request
 <h1 id="title">
 		後臺管理員
 	<div id="login">
-		<form action="Adminlogin" method="post"
+		<form action="../Adminlogin" method="post"
 			onsubmit="javascript:return checkForm()">
 			<p>
 				<input type="text" name="userName" id="userName" placeholder="名稱">

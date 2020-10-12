@@ -34,7 +34,9 @@ public class Adminlogin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
         
-		String mainPath="index.jsp";
+		String appContext = request.getContextPath();
+		
+        String mainPath="admin/login.jsp";
 		
 		String loginPath="login.jsp";
 		
@@ -54,17 +56,22 @@ public class Adminlogin extends HttpServlet {
 		if(passWord==null) {
 			list.add("密碼不能為空");
 		}
-//		if(list.size()==0) {
-//			if(service.userLogin(admin)) {
-//				request.getSession().setAttribute("adminUser",admin );
-//				response.sendRedirect(mainPath);
-//				return;
-//			}else {
-//				list.add("帳號密碼錯誤");	
-//			}
-//		}
-//		request.setAttribute("infoList", list);
-		request.getRequestDispatcher(loginPath).forward(request, response);
+		if(list.size()==0) {
+			if(service.userLogin(admin)) {
+				request.getSession().setAttribute("adminUser",admin );
+				response.sendRedirect(mainPath);
+				return;
+			}else {
+				list.add("帳號密碼錯誤");	
+			}
+		}
+		request.setAttribute("infoList", list);
+		
+		System.out.println("轉");
+		
+//		request.getRequestDispatcher("/admin/login.jsp").forward(request, response);
+		
+		response.sendRedirect(mainPath);
 	}
 
 	/**

@@ -118,6 +118,13 @@
 <input type="text" name='maxPrice'></input>
 <input type="submit" value="送出"></input>
 </form>
+<hr></hr>
+<h3>訂單查詢(輸入會員編號)</h3>
+<form action='OrderListServlet'>
+<input type="text" name='memberID'></input>
+<input type="submit" value="送出"></input>
+</form>
+
 </nav>
 </body>
 </html>

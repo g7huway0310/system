@@ -22,13 +22,13 @@ public class createTable {
 
 		) {
 
-			System.out.println(createTableOrderSql);
+			System.out.println(createTableAdminsSql);
 
-      	    pstmt.execute();
-			psmt2.execute();
-			psmt3.execute();
-			psmt4.execute();
-
+//      	pstmt.execute();
+//			psmt2.execute();
+//			psmt3.execute();
+//			psmt4.execute();
+			
 			System.out.println("query finished");
 
 		} catch (SQLException e) {

@@ -38,10 +38,9 @@ public class DBService_for_Oracle {
 			+ " PRODUCT_ID       varchar2(72), " + " Description      varchar2(2500), " + " amount           int, "
 			+ " unitPrice        number(18,1) " + " ) ";
 
-	private static final String CREATE_Table_Admins_SQL = "Create TABLE ADMINS"
-			+ "(ADMINSNO number generated as identity constraint ADMINS_PK primary key, " 
-			+ " userName       varchar2(72), " + " passWord      varchar2(2500), " + " name           varchar2(72), "
-			+" ) ";
+	private static final String CREATE_Table_Admins_SQL = "Create TABLE s_admin"
+			+"(id INT  GENERATED as IDENTITY constraint s_admin primary key NOT NULL,"
+			+"userName varchar(255) NOT NULL, passWord varchar(255) NOT NULL, name varchar(255))";
 	
 	
 	public static String getCreateTableAdminsSql() {

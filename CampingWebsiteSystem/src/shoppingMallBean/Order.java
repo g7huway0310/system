@@ -28,6 +28,22 @@ public class Order {
 		this.orderStatus = orderStatus;
 		this.invoiceTitle = invoiceTitle;
 	}
+	
+	
+
+	public Order(int orderNo, int memberId, Double totalAmount, Date orderDate, String shippingAddress,
+			String invoiceTitle, List<OrderItem> oItem) {
+		super();
+		this.orderNo = orderNo;
+		this.memberId = memberId;
+		this.totalAmount = totalAmount;
+		this.orderDate = orderDate;
+		this.shippingAddress = shippingAddress;
+		this.invoiceTitle = invoiceTitle;
+		this.oItem = oItem;
+	}
+
+
 
 	public List<OrderItem> getoItem() {
 		return oItem;

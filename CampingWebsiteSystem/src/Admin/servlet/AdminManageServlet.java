@@ -22,7 +22,9 @@ public class AdminManageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String ADMINLIST_PATH="adminManage/adminList.jsp";
+	
 	private static final String ADMINADD_PATH="adminManage/adminAdd.jsp";
+	
 	private static final String ADMINEDIT_PATH="adminManage/adminEdit.jsp";
        
     /**

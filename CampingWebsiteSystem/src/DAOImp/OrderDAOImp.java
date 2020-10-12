@@ -5,15 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.sql.DataSource;
-
 import ShoppingMallDAO.OrderDAO;
+import model.DBService_for_Oracle;
 import shoppingMallBean.Order;
 import shoppingMallBean.OrderItem;
 
@@ -55,10 +58,6 @@ public class OrderDAOImp implements OrderDAO {
 			psmt.setString(4, order.getInvoiceTitle());
 			psmt.setDouble(5, order.getOrderStatus());
 			Timestamp ts = new Timestamp(order.getOrderDate().getTime());
-			
-			
-			
-			
 			psmt.setTimestamp(6, ts);
 
 			psmt.executeUpdate();
@@ -104,33 +103,138 @@ public class OrderDAOImp implements OrderDAO {
 
 	}
 
-	@Override
-	public List<Order> getOrder(int memberid) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
-	public void findOrder(int orderid) {
-
-		Order aOrder = null;
+	public Order findOrder(int orderid) {
+		Order ob = null;
 		DataSource ds = null;
 		Set<OrderItem> set = null;
-
-		String sqlOrder = "select* from orders where orderno=?";
-		String sql1 = "SELECT * FROM OrderItem";
-		try (PreparedStatement psmt = con.prepareStatement(sqlOrder);) {
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup(DBService_for_Oracle.JNDI_DB_NAME);
+			Connection connection = ds.getConnection();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException("OrderDaoImpl類別#getOrder()-1發生例外: " + ex.getMessage());
 		}
+
+		String sql = "SELECT * FROM Orders WHERE orderno = ? ";
+		String sql1 = "SELECT * FROM OrderItems WHERE orderno = ? ";
+		try (
+			Connection con = ds.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			PreparedStatement ps1 = con.prepareStatement(sql1);
+		) {
+			ps.setInt(1, orderNo);
+			try (
+				ResultSet rs = ps.executeQuery();
+			) {
+				if (rs.next()) {
+					Integer no = rs.getInt("orderNo");
+					String invoiceTitle = rs.getString("invoiceTitle");
+					int id = rs.getInt("memberId");
+					Timestamp orderDate = rs.getTimestamp("orderDate");
+					String shippingAddress = rs.getString("shippingAddress");
+					double totalAmount = rs.getDouble("totalAmount");
+					
+				    ob=new Order(no, id, totalAmount, orderDate, shippingAddress, invoiceTitle, null);
+				}
+			}
+			ps1.setInt(1, orderNo);
+			try (
+				ResultSet rs = ps1.executeQuery();
+			) {
+				ArrayList list=new ArrayList<OrderItem>();
+				
+				while (rs.next()) {
+					int seqno = rs.getInt("seqNo");
+					Double orderNo = rs.getDouble("orderNo");
+					String productId = rs.getString("bookId");
+					String description = rs.getString("description");
+					Double quantity = rs.getDouble("amount");
+					Double unitPrice = rs.getDouble("unitPrice");
+					OrderItem oi = new OrderItem(seqno, productId, orderNo, unitPrice, quantity, description);
+					list.add(oi);
+				}
+				ob.setoItem(list);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException("OrderDaoImpl類別#getOrder()-2發生例外: " + ex.getMessage());
+		}
+		return ob;
+		
+		
 	}
 
 	@Override
 	public void setConnection(Connection con) {
 		// TODO Auto-generated method stub
 		this.con = con;
+	}
+
+	@Override
+	public List<Order> getAllOrders() {
+		// TODO Auto-generated method stub
+		DataSource ds = null;
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup(DBService_for_Oracle.JNDI_DB_NAME);
+			Connection connection = ds.getConnection();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException("OrderDaoImpl類別#getOrder()-1發生例外: " + ex.getMessage());
+		}
+		List<Order> list = new ArrayList<Order>();
+		String sql = "SELECT OrderNo FROM Orders";
+		try (
+			Connection con = ds.getConnection();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+		) {
+			while (rs.next()) {
+				Integer no = rs.getInt(1);
+				list.add(findOrder(no));
+			}
+		} catch(SQLException ex){
+			throw new RuntimeException(ex);
+		}
+		return list;
+	}
+
+	@Override
+	public List<Order> getMemberOrders(String memberId) {
+		// TODO Auto-generated method stub
+		DataSource ds = null;
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup(DBService_for_Oracle.JNDI_DB_NAME);
+			Connection connection = ds.getConnection();
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new RuntimeException("OrderDaoImpl類別#getOrder()-1發生例外: " + ex.getMessage());
+		}
+		List<Order> list = new ArrayList<Order>();
+		String sql = "SELECT OrderNo FROM Orders where memberId = ? Order by orderDate desc ";
+		try (
+				Connection con = ds.getConnection();
+				PreparedStatement ps = con.prepareStatement(sql);
+			) {
+				ps.setString(1, memberId);
+				try (
+					ResultSet rs = ps.executeQuery();
+				) {
+					while (rs.next()) {
+						Integer no = rs.getInt(1);
+						list.add(findOrder(orderNo));
+					}
+				}
+		} catch(SQLException ex){
+			throw new RuntimeException(ex);
+		}
+		return list;
 	}
 
 }
