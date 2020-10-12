@@ -1,18 +1,39 @@
 package shoppingMallBean;
 
-public class Admins {
+public class Admin {
 	private Integer id;				
 	private String userName;			
 	private String passWord;			
 	private String name;
 	
-	public Admins(Integer id, String userName, String passWord, String name) {
+	public Admin(){
+		
+	}
+	
+	public Admin(Integer id, String userName, String passWord, String name) {
 		super();
 		this.id = id;
 		this.userName = userName;
 		this.passWord = passWord;
 		this.name = name;
 	}
+	public Admin(Integer id, String passWord, String name) {
+		super();
+		this.id = id;
+		this.passWord = passWord;
+		this.name = name;
+	}
+	public Admin(String userName,String passWord) {
+		this.userName=userName;
+		this.passWord=passWord;
+	}
+	public Admin(String userName, String passWord, String name) {
+		super();
+		this.userName = userName;
+		this.passWord = passWord;
+		this.name = name;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

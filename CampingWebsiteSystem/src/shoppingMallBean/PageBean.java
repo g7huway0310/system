@@ -70,6 +70,10 @@ public class PageBean<T> {
 		this.dataList = dataList;
 	}
 
+	public PageBean(int curPage, int maxSize2, long bookReadCount) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public int getPageSize() {
 		return pageSize;
 	}

@@ -10,7 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import ShoppingMallDAO.AdminsDAO;
-import shoppingMallBean.Admins;
+import shoppingMallBean.Admin;
 import shoppingMallBean.PageBean;
 import sun.security.mscapi.CKeyPairGenerator.RSA;
 
@@ -20,6 +20,11 @@ public class AdminDaoImp1 implements AdminsDAO {
 
 	private Connection conn;
 
+	public AdminDaoImp1(Connection connection) {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
 	public DataSource getDataSource() {
 		return dataSource;
 	}
@@ -37,7 +42,7 @@ public class AdminDaoImp1 implements AdminsDAO {
 	}
 
 	@Override
-	public boolean userLogin(Admins admin) {
+	public boolean userLogin(Admin admin) {
 		// TODO Auto-generated method stub
 		boolean flag = false;
 		String sql = "select * from s_admin where userName=? and passWord= ?";
@@ -63,9 +68,9 @@ public class AdminDaoImp1 implements AdminsDAO {
 	}
 
 	@Override
-	public List<Admins> userList(PageBean pageBean) {
+	public List<Admin> userList(PageBean pageBean) {
 		// TODO Auto-generated method stub
-		List<Admins> lu = new ArrayList<>();
+		List<Admin> lu = new ArrayList<>();
 		String sql = "select * from s_admin  ?,?";
 		String sqlString = "SELECT * FROM example_table WHERE ROWNUM < ?" + "MINUS"
 				+ "SELECT * FROM example_table WHERE ROWNUM < ?";
@@ -81,7 +86,7 @@ public class AdminDaoImp1 implements AdminsDAO {
 				String userName = rs.getString("userName");
 				String passWord = rs.getString("passWord");
 				String name = rs.getString("name");
-				Admins admins = new Admins(id, userName, passWord, name);
+				Admin admins = new Admin(id, userName, passWord, name);
 
 				lu.add(admins);
 			}
@@ -93,7 +98,7 @@ public class AdminDaoImp1 implements AdminsDAO {
 	}
 
 	@Override
-	public boolean userAdd(Admins admin) {
+	public boolean userAdd(Admin admin) {
 
 		boolean flag = false;
 
@@ -120,15 +125,38 @@ public class AdminDaoImp1 implements AdminsDAO {
 	}
 
 	@Override
-	public boolean userUpdate(Admins admin) {
+	public boolean userUpdate(Admin admin) {
 		// TODO Auto-generated method stub
-		return false;
+		//String sql="update s_admin set password=? , name=? where id =?";
+		boolean flag = false;
+
+		String sql = "insert into s_admin(userName,password,name) values(?,?,?)";
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, admin.getUserName());
+			pstmt.setString(2, admin.getPassWord());
+			pstmt.setString(3, admin.getName());
+
+			int result = pstmt.executeUpdate();
+
+			if (result > 0) {
+				flag = true;
+				System.out.println("新增成功");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return flag;
 	}
 
 	@Override
-	public Admins findUser(Integer id) {
+	public Admin findUser(Integer id) {
 		// TODO Auto-generated method stub
-		Admins admins = null;
+		Admin admins = null;
 		String sql = "select * from s_admin where id=?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -139,7 +167,7 @@ public class AdminDaoImp1 implements AdminsDAO {
 				String userName = rs.getString("userName");
 				String passWord = rs.getString("passWord");
 				String name = rs.getString("name");
-				admins = new Admins(id, userName, passWord, name);
+				admins = new Admin(id, userName, passWord, name);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
