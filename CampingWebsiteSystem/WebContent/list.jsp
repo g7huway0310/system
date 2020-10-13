@@ -64,6 +64,7 @@
                <Input type='hidden' name='warring' value='${p.productWarring}'>
                <Input type='hidden' name='price' value='${p.productPrice}'>
                <Input type='hidden' name='feature' value='${p.productfeature}'>
+               <Input type='hidden' name='choose' value=<%=choose%>>
                <Input type='submit' value='加入購物車' class="form-control">
        </FORM>
        <td>
@@ -72,7 +73,6 @@
 </form>
 </table>
 </div>
-   <li><a href="http://localhost:8080/CampingWebsiteSystem/listcart.jsp?type=0">回首頁</a></li>
-   <li><a href="http://localhost:8080/CampingWebsiteSystem/HomePage.jsp">回首頁</a></li>
+   
 </body>
 </html>

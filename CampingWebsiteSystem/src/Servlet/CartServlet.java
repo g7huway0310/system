@@ -74,11 +74,14 @@ public class CartServlet extends HttpServlet {
 
 		BusinessServiceImp service = new BusinessServiceImp();
 
+		String choose = request.getParameter("choose");
+		
 		String productId = request.getParameter("id");
 
 		String strNum = request.getParameter("num");
 
 		int num = Integer.parseInt(strNum);
+		
 		
 		
 		
@@ -96,7 +99,7 @@ public class CartServlet extends HttpServlet {
 		}
 		cart.add(product, num);
 
-		response.sendRedirect("addcart.jsp");
+		response.sendRedirect("http://localhost:8080/CampingWebsiteSystem/list.jsp?type="+choose);
 	}
 
 	private void delete(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

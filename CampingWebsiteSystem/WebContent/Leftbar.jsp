@@ -78,6 +78,7 @@
 			<li><a
 				href="http://localhost:8080/CampingWebsiteSystem/list.jsp?type=9"
 				class="leftBara">工具</a></li>
+			<li><a href="CartServlet?opt=show" class="btn btn-danger">去購物車結算</a></li>
 		</ul>
 </div>
 
