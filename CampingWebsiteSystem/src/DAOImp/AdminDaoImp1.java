@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import ShoppingMallDAO.AdminsDAO;
@@ -19,6 +21,10 @@ public class AdminDaoImp1 implements AdminsDAO {
 	private DataSource dataSource;
 
 	private Connection conn;
+	
+	public AdminDaoImp1() {
+		
+	}
 
 	public AdminDaoImp1(Connection connection) {
 		// TODO Auto-generated constructor stub
@@ -47,6 +53,10 @@ public class AdminDaoImp1 implements AdminsDAO {
 		boolean flag = false;
 		String sql = "select * from s_admin where userName=? and passWord= ?";
 		try {
+			InitialContext ctxt = new InitialContext();
+			Object lookup = ctxt.lookup("java:comp/env/jdbc/xe");
+			DataSource ds = (DataSource) lookup;
+			conn = ds.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, admin.getName());
 			pstmt.setString(2, admin.getPassWord());
@@ -55,6 +65,9 @@ public class AdminDaoImp1 implements AdminsDAO {
 				flag = true;
 			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -71,10 +84,16 @@ public class AdminDaoImp1 implements AdminsDAO {
 	public List<Admin> userList(PageBean pageBean) {
 		// TODO Auto-generated method stub
 		List<Admin> lu = new ArrayList<>();
-		String sql = "select * from s_admin  ?,?";
-		String sqlString = "SELECT * FROM example_table WHERE ROWNUM < ?" + "MINUS"
-				+ "SELECT * FROM example_table WHERE ROWNUM < ?";
+		
+		String sqlString = "SELECT * " + 
+				"FROM   sometable" + 
+				"ORDER BY name" + 
+				"OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 		try {
+			InitialContext ctxt = new InitialContext();
+			Object lookup = ctxt.lookup("java:comp/env/jdbc/xe");
+			DataSource ds = (DataSource) lookup;
+			conn = ds.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sqlString);
 			pstmt.setInt(1, (pageBean.getCurrentPage() - 1) * pageBean.getMaxsize());
 			pstmt.setInt(2, pageBean.getTotalPage());
@@ -87,10 +106,12 @@ public class AdminDaoImp1 implements AdminsDAO {
 				String passWord = rs.getString("passWord");
 				String name = rs.getString("name");
 				Admin admins = new Admin(id, userName, passWord, name);
-
 				lu.add(admins);
 			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -21,11 +21,11 @@ public class AdminManageServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static final String ADMINLIST_PATH="adminManage/adminList.jsp";
+	private static final String ADMINLIST_PATH="adminList.jsp";
 	
-	private static final String ADMINADD_PATH="adminManage/adminAdd.jsp";
+	private static final String ADMINADD_PATH="adminAdd.jsp";
 	
-	private static final String ADMINEDIT_PATH="adminManage/adminEdit.jsp";
+	private static final String ADMINEDIT_PATH="adminEdit.jsp";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -78,7 +78,7 @@ public class AdminManageServlet extends HttpServlet {
 				curPage=Integer.parseInt(page);
 			}
 			
-			int maxSize=Integer.parseInt(request.getServletContext().getInitParameter("maxPageSize"));
+			int maxSize=10;
 			
 			PageBean pageBean=new PageBean(curPage,maxSize,service.bookReadCount());
 			

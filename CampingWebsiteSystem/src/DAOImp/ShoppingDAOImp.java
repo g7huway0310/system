@@ -153,6 +153,47 @@ public class ShoppingDAOImp implements ProductDAO {
 
 		return list;
 	}
+	
+	public List<ShoppingProduct> searchtypeOrderbyprice(int selectWhich) {
+
+		String[] typeArray = { "tent", "sky", "bedding", "cartpet", "furniture", "furniture", "lamp", "cook",
+				"tableware", "ice", "tool" };
+
+		List<ShoppingProduct> list = new ArrayList<ShoppingProduct>();
+
+		String sqlString = "select * from shoppingdata where PRODUCT_id like ? ORDER BY PRODUCT_price ";
+
+		try (PreparedStatement pstmt = conn.prepareStatement(sqlString);)
+
+		{
+
+			pstmt.setString(1, "%" + typeArray[selectWhich] + "%");
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				String id = rs.getString("PRODUCT_ID");
+				String brand = rs.getString("PRODUCT_BRAND");
+				String name = rs.getString("PRODUCT_NAME");
+				int price = rs.getInt("PRODUCT_PRICE");
+				String spec = rs.getString("PRODUCT_SPEC");
+				int stack = rs.getInt("PRODUCT_STOCK");
+				String warring = rs.getString("PRODUCT_WARRING");
+
+				ShoppingProduct product = new ShoppingProduct(id, brand, name, price, spec, stack, warring);
+
+				list.add(product);
+
+			}
+
+		} catch (SQLException e) {
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return list;
+	}
 
 	public String creatOrder(String productID) {
 

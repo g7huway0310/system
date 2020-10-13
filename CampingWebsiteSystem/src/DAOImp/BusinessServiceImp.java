@@ -159,6 +159,36 @@ public class BusinessServiceImp implements CartDAO {
 		}
 		return result;
 	}
+	
+	public List<ShoppingProduct> searchtypeOrder(int selectWhich) {
+		// TODO Auto-generated method stub
+		List<ShoppingProduct> result = null;
+		try {
+			ctxt = new InitialContext();
+			Object lookup = ctxt.lookup("java:comp/env/jdbc/xe");
+			ds = (DataSource) lookup;
+			connection = ds.getConnection();
+			dao = new ShoppingDAOImp(connection);
+			result = dao.searchtype(selectWhich);
+
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (Exception e) {
+				System.out.println("Connection Pool Error!");
+			}
+		}
+		return result;
+	}
+	
+	
 	public void addClcikNum(String id) {
 		
 		try {

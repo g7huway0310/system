@@ -9,9 +9,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%@include file="TopNavBar.jsp" %><!-- 第一種 -->
-<a href="<c:url value='PageServlet' />" >
-    購物 
-</a>
+
+<jsp:include page="header.jsp"></jsp:include><!-- 第二種 -->
+
+
 </body>
 </html>

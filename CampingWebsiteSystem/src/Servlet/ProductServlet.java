@@ -81,6 +81,7 @@ public class ProductServlet extends HttpServlet {
 		PageBean<ShoppingProduct> Pager = new PageBean<ShoppingProduct>(page, 5, searchList);
 
 		request.getSession().setAttribute("searchProducts", Pager);
+		
 		response.sendRedirect("search.jsp");
 
 	}
@@ -117,6 +118,7 @@ public class ProductServlet extends HttpServlet {
 
 	protected void buyProduct(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		String productId = request.getParameter("pid");
 		System.out.println(productId);
 		BusinessServiceImp dao = new BusinessServiceImp();

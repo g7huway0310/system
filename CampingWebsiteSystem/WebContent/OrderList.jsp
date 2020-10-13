@@ -1,40 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
 <body>
-<table style="margin-left:auto; margin-right:auto; width:810; background:#F5EBFF; border:2px solid blue; border-style: outset; ">
+<jsp:include page="header.jsp"></jsp:include>
 
-		<tr id='borderA' height='50' >
-			<th id='borderA'  colspan="4" align="center">${LoginOK.name}的訂購紀錄</th>
-		</tr>
-		<tr id='borderA' height='36' >
-			<th id='borderA'>訂單編號</th>
-			<th id='borderA'>訂購日期</th>
-			<th id='borderA'>總金額</th>
-			<th id='borderA'>送貨地址</th>
-		</tr>
-		<c:forEach var="anOrderBean" varStatus="stat" items="${memberOrders}">
-			<TR id='borderA' height='30'>
-			<TD id='borderA' width="86" align="center">
-			    <a  href='<c:url value='orderDetail.do?memberId=${LoginOK.memberId}&orderNo=${anOrderBean.orderNo}' />'>
-				    ${anOrderBean.orderNo}
-			    </a>
-			</TD>
-			<TD id='borderA' width="100" align="center">${anOrderBean.orderDate}</TD>
-			<TD id='borderA' width="80" align="right">${anOrderBean.totalAmount}</TD>
-			<TD id='borderA' width="400" align="left">&nbsp;${anOrderBean.shippingAddress}</TD>
-							
-		</TR>
-		</c:forEach>
-		<tr height='36' id='borderA'>
-			<td id='borderA' align="center" colspan="4"><a href="<c:url value='../index.jsp' />">回首頁</a></td>
-		</tr>
-	</TABLE>
-	
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">訂單編號</th>
+				<th scope="col">訂購日期</th>
+				<th scope="col">總金額</th>
+				<th scope="col">送貨地址</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:choose>
+				<c:when test="${!empty memberOrders}">
+					<c:forEach items="${memberOrders}" var="i" varStatus="n">
+						<tr>
+							<td><input type="checkbox" name="choice" value="${i.orderNo}">
+							<td><a
+								href='<c:url value='orderDetail.do?memberId=${LoginOK.memberId}&orderNo=${anOrderBean.orderNo}' />'>
+									${i.orderNo} </a></td>
+							<td>${i.orderDate}</td>
+							<td>${i.totalAmount}</td>
+							<td>${i.shippingAddress}</td>
+						</tr>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tr>
+						<td colspan="8"><h4 class="text-center">沒有訂單</h4></td>
+					</tr>
+				</c:otherwise>
+			</c:choose>
+		</tbody>
+	</table>
+
 </body>
 </html>

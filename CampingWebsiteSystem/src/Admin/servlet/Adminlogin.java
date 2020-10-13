@@ -36,7 +36,7 @@ public class Adminlogin extends HttpServlet {
         
 		String appContext = request.getContextPath();
 		
-        String mainPath="admin/login.jsp";
+        String mainPath="admin/index.jsp";
 		
 		String loginPath="login.jsp";
 		

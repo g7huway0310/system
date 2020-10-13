@@ -44,12 +44,13 @@ public class OrderListServlet extends HttpServlet {
 		
 		String memberID = request.getParameter("memberID");
 		
+	    int memberid=Integer.valueOf(memberID);
+		
 		System.out.println(memberID);
 		
-		OrderDAOImp orderService = new OrderDAOImp();
+	    OrderDAOImp orderService=new OrderDAOImp();
 		
-		java.util.List<Order> memberOrders = orderService.getMemberOrders(memberID);
-		
+		java.util.List<Order> memberOrders = orderService.getMemberOrders(memberid);
 		
 		request.setAttribute("memberOrders", memberOrders);
 		

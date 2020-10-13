@@ -29,7 +29,7 @@ public class AdminDaoService implements AdminsDAO {
 			Object lookup = ctxt.lookup("java:comp/env/jdbc/xe");
 			ds = (DataSource) lookup;
 			connection = ds.getConnection();
-			dao = new AdminDaoImp1(connection);
+			dao = new AdminDaoImp1();
 			userLoginState = dao.userLogin(admin);
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
@@ -64,6 +64,7 @@ public class AdminDaoService implements AdminsDAO {
 			ds = (DataSource) lookup;
 			connection = ds.getConnection();
 			dao = new AdminDaoImp1(connection);
+			
 	        userList = dao.userList(pageBean);
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block

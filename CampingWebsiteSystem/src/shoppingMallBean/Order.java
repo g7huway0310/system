@@ -109,9 +109,4 @@ public class Order {
 		this.invoiceTitle = invoiceTitle;
 	}
 
-	public void setoItem1(List<OrderItem> oItem2) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

@@ -20,7 +20,7 @@ import model.DBService_for_Oracle;
 import shoppingMallBean.Order;
 import shoppingMallBean.OrderItem;
 
-public class OrderDAOImp implements OrderDAO {
+public class OrderDAOImp {
 
 	private String memberId = null;
 
@@ -36,7 +36,9 @@ public class OrderDAOImp implements OrderDAO {
 
 	int orderNo = 0;
 
-	@Override
+	private ArrayList<OrderItem> list;
+
+	
 	public void addOrder(Order order) {
 
 		// TODO Auto-generated method stub
@@ -91,13 +93,13 @@ public class OrderDAOImp implements OrderDAO {
 		}
 	}
 
-	@Override
+
 	public void delOrder(Order order) {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	
 	public void update(Order order) {
 		// TODO Auto-generated method stub
 
@@ -105,11 +107,11 @@ public class OrderDAOImp implements OrderDAO {
 
 	
 
-	@Override
 	public Order findOrder(int orderid) {
+		
 		Order ob = null;
 		DataSource ds = null;
-		ArrayList list=null;
+		ArrayList<OrderItem> list=new ArrayList<OrderItem>();
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource) ctx.lookup(DBService_for_Oracle.JNDI_DB_NAME);
@@ -137,7 +139,8 @@ public class OrderDAOImp implements OrderDAO {
 					Timestamp orderDate = rs.getTimestamp("orderDate");
 					String shippingAddress = rs.getString("shippingAddress");
 					double totalAmount = rs.getDouble("totalAmount");
-				    ob=new Order(no, id, totalAmount, orderDate, shippingAddress, invoiceTitle, null);
+					ob=new Order(no, id, totalAmount, orderDate, shippingAddress, invoiceTitle, null);
+				    
 				}
 			}
 			ps1.setInt(1, orderid);
@@ -168,13 +171,13 @@ public class OrderDAOImp implements OrderDAO {
 		
 	}
 
-	@Override
+	
 	public void setConnection(Connection con) {
 		// TODO Auto-generated method stub
 		this.con = con;
 	}
 
-	@Override
+	
 	public List<Order> getAllOrders() {
 		// TODO Auto-generated method stub
 		DataSource ds = null;
@@ -203,8 +206,8 @@ public class OrderDAOImp implements OrderDAO {
 		return list;
 	}
 
-	@Override
-	public List<Order> getMemberOrders(String memberId) {
+	
+	public List<Order> getMemberOrders(int memberId) {
 		// TODO Auto-generated method stub
 		DataSource ds = null;
 		try {
@@ -220,20 +223,27 @@ public class OrderDAOImp implements OrderDAO {
 				Connection con = ds.getConnection();
 				PreparedStatement ps = con.prepareStatement(sql);
 			) {
-				ps.setString(1, memberId);
+				ps.setInt(1, memberId);
 				try (
 					ResultSet rs = ps.executeQuery();
 				) {
 					while (rs.next()) {
+						
 						Integer no = rs.getInt(1);
+						
+						System.out.println(no+"訂單編號測試");
+					
 						list.add(findOrder(no));
 					}
 				}
 		} catch(SQLException ex){
+			
 			throw new RuntimeException(ex);
+			
 		}
 		
-		System.out.println("pass");
+		System.out.println(list.get(0).getOrderNo()+"訂單編號");
+		
 		return list;
 	}
 

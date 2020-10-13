@@ -28,7 +28,7 @@ th, td {
 <body>
 	<form action="CartServlet?opt=add&id=${buyProduct.productId}"
 		method="post">
-		<table>
+		<table class="table table-striped">
 		<tr>
 		<th>產品名稱</th>
 		<th>產品價格</th>

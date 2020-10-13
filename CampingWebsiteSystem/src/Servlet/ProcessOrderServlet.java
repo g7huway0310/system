@@ -61,7 +61,7 @@ public class ProcessOrderServlet extends HttpServlet {
 			response.sendRedirect(response.encodeRedirectURL(request.getContextPath()));
 			return; // 一定要記得 return
 		}
-		double orderPrice = cart.getPrice();// 取出訂單總金額
+		double totalAmount = cart.getPrice();// 取出訂單總金額
 
 		String shippingAddress = request.getParameter("SHIPPINGADDRESS"); // 出貨地址
 
@@ -69,9 +69,9 @@ public class ProcessOrderServlet extends HttpServlet {
 
 		String invoiceTitle = request.getParameter("invoiceTitle");
 
-		Date today = new Date();// 訂單新增時間
+		Date orderDate = new Date();// 訂單新增時間
 
-		Order aOrder = new Order(0, 0, orderPrice, today, shippingAddress, 0, invoiceTitle);
+		Order aOrder = new Order(0, 1, totalAmount, orderDate, shippingAddress, invoiceTitle, null);
 
 		// 新建一個存放訂單明細的Set物件: items
 		List<OrderItem> oItem = new ArrayList<OrderItem>();// 訂單明細

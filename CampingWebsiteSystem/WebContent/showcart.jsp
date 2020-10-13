@@ -29,7 +29,7 @@ function deAll(){
 	document.forms[0].submit();
 }
 function checkout(){
-	document.forms[0].action="menberGuest.jsp"
+	document.forms[0].action="confirmOrder.jsp"
 	document.forms[0].method="POST";
 	document.forms[0].submit();
 }
